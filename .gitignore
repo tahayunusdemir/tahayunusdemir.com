@@ -1,0 +1,28 @@
+# research & references (large, third-party)
+research/
+
+# deps & build
+node_modules/
+dist/
+.astro/
+.wrangler/
+
+# env & secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# logs & OS
+*.log
+.DS_Store
+Thumbs.db
+
+# editor / test artifacts
+.vscode/*
+!.vscode/extensions.json
+playwright-report/
+test-results/
+.lighthouseci/
+screenshots/
