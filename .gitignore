@@ -1,5 +1,10 @@
-# research & references (large, third-party)
+# NEVER push: research, docs, agent files, markdown notes (Taha's rule)
 research/
+docs/
+.claude/
+CLAUDE.md
+AGENTS.md
+*.md
 
 # deps & build
 node_modules/
