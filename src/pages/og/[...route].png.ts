@@ -20,7 +20,6 @@ export const getStaticPaths = (async () => {
       ["projects", u["projects.title"]],
       ["blog", u["blog.title"]],
       ["cv", u["cv.title"]],
-      ["about", u["about.title"]],
     ];
     for (const [key, title] of pages) paths.push({ params: { route: `${lang}/${key}` }, props: { ...base, title } });
 

@@ -18,7 +18,7 @@ export const ui = {
     "home.hello": "Merhaba, ben Taha.",
     "home.intro":
       "Ankara'da yaşayan bir bilgisayar mühendisiyim. Kotlin ve Jetpack Compose ile Android, Next.js ve TypeScript ile full stack web uygulamaları geliştiriyorum. Şu sıralar film keşfi odaklı sosyal platformum CineMention'ı tek başıma büyütüyorum.",
-    "home.status": "Yeni fırsatlara açığım · İstanbul'a taşınabilirim",
+    "home.status": "Junior Android ve full stack rollerine açığım",
     "home.ctaCv": "CV'yi görüntüle",
     "home.ctaContact": "İletişime geç",
     "home.now": "Şu an",
@@ -30,7 +30,8 @@ export const ui = {
     "home.allPosts": "Tüm yazılar",
     "home.experience": "Deneyim",
     "home.fullCv": "Tam CV",
-    "home.stack": "Kullandığım teknolojiler",
+    "home.contactTitle": "Birlikte çalışalım",
+    "home.contactText": "Bir pozisyon, proje ya da soru için e-posta en hızlı yol.",
     "projects.title": "Projeler",
     "projects.description":
       "Kurduğum ürünler, staj ve üniversite projeleri. Kapalı kaynak işlerde yalnızca mimariyi ve rolümü anlatıyorum.",
@@ -95,7 +96,7 @@ export const ui = {
     "home.hello": "Hi, I'm Taha.",
     "home.intro":
       "I'm a computer engineer based in Ankara, Türkiye. I build Android apps with Kotlin and Jetpack Compose and full stack web apps with Next.js and TypeScript. Right now I'm growing CineMention, a film discovery social platform I founded and develop on my own.",
-    "home.status": "Open to new roles · Open to relocating to Istanbul",
+    "home.status": "Open to junior Android and full stack roles",
     "home.ctaCv": "View CV",
     "home.ctaContact": "Get in touch",
     "home.now": "Now",
@@ -107,7 +108,8 @@ export const ui = {
     "home.allPosts": "All posts",
     "home.experience": "Experience",
     "home.fullCv": "Full CV",
-    "home.stack": "Tech I work with",
+    "home.contactTitle": "Let's work together",
+    "home.contactText": "For a role, a project or a question, email is the fastest way to reach me.",
     "projects.title": "Projects",
     "projects.description":
       "Products I founded, internship work and university projects. For closed source work I describe the architecture and my role only.",

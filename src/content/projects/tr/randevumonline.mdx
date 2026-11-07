@@ -31,9 +31,6 @@ Python 3.12, FastAPI, MongoDB (Motor), Pydantic v2 ve httpx ile yazılmış, ço
 - **Durum motoru:** Resmî tatil, izin, mesai dışı, öğle arası, internet yok (5 dakikadan eski konum), GPS kapalı, alan içi ve alan dışı durumlarını ayırt ediyor. Mesafe Haversine formülüyle hesaplanıyor. Olay yalnızca durum değiştiğinde ya da 15 dakikada bir kaydediliyor; geçersiz push abonelikleri otomatik temizleniyor.
 - **Android uygulaması:** Kotlin, Jetpack Compose, Hilt, Retrofit ve DataStore. Konum, bir foreground service üzerinden gönderiliyor; WorkManager ve AlarmManager ile 15 dakikalık bir planlayıcı çalışıyor, telefon yeniden başladığında takip kaldığı yerden sürüyor.
 
-## Diğer işler
+## Ayrıca
 
 - **Sektörden Duyurular:** KOSGEB, TÜBİTAK, İŞKUR ve Sanayi Bakanlığı duyurularını zamanlanmış scraper'larla (node-cron, cheerio) toplayıp MongoDB'de tekilleştiren bir Next.js uygulaması.
-- **TÜBİTAK 1501 başvurusu:** Şirketin bir ürünü için Ar-Ge başvuru dosyalarının hazırlanmasına katkı verdim.
-
-> Kaynak kod şirkete ait ve gizli. Bu sayfada yalnızca mimariyi ve kendi rolümü anlatıyorum.

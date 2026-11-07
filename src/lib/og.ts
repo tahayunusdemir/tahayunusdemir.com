@@ -46,25 +46,7 @@ export async function renderOg({ title, kicker, footer }: { title: string; kicke
       fontFamily: "Inter, Inter Ext",
     },
     [
-      h("div", { display: "flex", alignItems: "center", gap: "18px" }, [
-        h(
-          "div",
-          {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "64px",
-            height: "64px",
-            borderRadius: "14px",
-            background: "#fafafa",
-            color: "#09090b",
-            fontSize: "22px",
-            fontWeight: 700,
-          },
-          "TYD",
-        ),
-        h("div", { display: "flex", fontSize: "28px", color: "#a1a1aa" }, kicker),
-      ]),
+      h("div", { display: "flex", fontSize: "30px", fontWeight: 700, color: "#fafafa" }, kicker),
       h(
         "div",
         {

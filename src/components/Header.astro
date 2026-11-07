@@ -16,7 +16,6 @@ const nav = [
   { href: "/projects", label: tr("nav.projects") },
   { href: "/blog", label: tr("nav.blog") },
   { href: "/cv", label: tr("nav.cv") },
-  { href: "/about", label: tr("nav.about") },
 ];
 const isActive = (href: string) => current === href || current.startsWith(href + "/");
 ---
@@ -27,14 +26,10 @@ const isActive = (href: string) => current === href || current.startsWith(href +
   <div class="container-page flex h-14 items-center justify-between gap-2 sm:gap-4">
     <a
       href={localizePath("/", lang)}
-      class="group flex items-center gap-2 font-semibold text-zinc-900 dark:text-zinc-100"
+      class="text-[15px] font-semibold tracking-tight whitespace-nowrap text-zinc-900 transition-colors hover:text-accent-700 dark:text-zinc-100 dark:hover:text-accent-400"
       aria-label={tr("nav.home")}
     >
-      <span
-        class="grid size-7 shrink-0 place-items-center rounded-md bg-zinc-900 font-mono text-[11px] font-bold text-white transition-colors group-hover:bg-accent-600 dark:bg-zinc-100 dark:text-zinc-900"
-        >TYD</span
-      >
-      <span class="hidden sm:inline">Taha Yunus Demir</span>
+      Taha Yunus Demir
     </a>
 
     <nav aria-label="Main" class="flex items-center gap-0.5 sm:gap-1">

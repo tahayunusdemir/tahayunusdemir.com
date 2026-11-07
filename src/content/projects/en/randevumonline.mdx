@@ -31,9 +31,6 @@ Tracks whether employees are at work using a geofence.
 - **Status engine:** Distinguishes public holidays, leave, off hours, lunch break, no connection (location older than 5 minutes), GPS off, and inside or outside the area, using the Haversine formula for distance. Events are stored only when the status changes or every 15 minutes, and dead push subscriptions are cleaned up automatically.
 - **Android app:** Kotlin, Jetpack Compose, Hilt, Retrofit and DataStore. Location is reported from a foreground service, a 15 minute scheduler runs on WorkManager and AlarmManager, and tracking resumes after the phone reboots.
 
-## Other work
+## Also
 
 - **Sector announcements:** A Next.js app that collects announcements from KOSGEB, TÜBİTAK, İŞKUR and the Ministry of Industry with scheduled scrapers (node-cron, cheerio) and deduplicates them in MongoDB.
-- **TÜBİTAK 1501 application:** I helped prepare the R&D funding application documents for one of the company's products.
-
-> The source code belongs to the company and is private. This page covers the architecture and my role only.

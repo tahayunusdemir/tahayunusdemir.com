@@ -8,8 +8,9 @@ import Icon from "./Icon.astro";
 interface Props {
   project: Project;
   lang: Lang;
+  showCover?: boolean;
 }
-const { project, lang } = Astro.props;
+const { project, lang, showCover = false } = Astro.props;
 const { slug } = splitId(project.id);
 const { title, summary, stack, period, cover, coverAlt, status } = project.data;
 const href = localizePath(`/projects/${slug}`, lang);
@@ -17,7 +18,7 @@ const href = localizePath(`/projects/${slug}`, lang);
 
 <article class="card group relative flex flex-col overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700">
   {
-    cover ? (
+    showCover && cover ? (
       <div class="aspect-[16/9] overflow-hidden border-b border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
         <Image
           src={cover}
@@ -27,17 +28,7 @@ const href = localizePath(`/projects/${slug}`, lang);
           class="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
         />
       </div>
-    ) : (
-      <div
-        class="relative grid aspect-[16/9] place-items-center overflow-hidden border-b border-zinc-200 bg-gradient-to-br from-accent-50 via-white to-zinc-100 dark:border-zinc-800 dark:from-accent-900/40 dark:via-zinc-900 dark:to-zinc-950"
-        aria-hidden="true"
-      >
-        <div class="absolute inset-0 bg-[radial-gradient(var(--color-zinc-300)_1px,transparent_1px)] [background-size:16px_16px] opacity-40 dark:bg-[radial-gradient(var(--color-zinc-700)_1px,transparent_1px)]" />
-        <span class="relative font-mono text-2xl font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
-          {title.split(" ")[0]}
-        </span>
-      </div>
-    )
+    ) : null
   }
   <div class="flex flex-1 flex-col gap-3 p-5">
     <div class="flex items-center justify-between gap-2 font-mono text-xs text-zinc-500 dark:text-zinc-400">

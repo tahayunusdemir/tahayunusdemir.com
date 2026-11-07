@@ -8,7 +8,6 @@ import { SITE, type Lang } from "@/consts";
 import { t } from "@/i18n/ui";
 import { localizePath } from "@/i18n/utils";
 import { getPosts, getProjects } from "@/lib/content";
-import { skills } from "@/data/cv";
 
 interface Props {
   lang: Lang;
@@ -17,7 +16,6 @@ const { lang } = Astro.props;
 const tr = t(lang);
 const projects = (await getProjects(lang)).filter((p) => p.data.featured).slice(0, 4);
 const posts = (await getPosts(lang)).slice(0, 3);
-const stack = skills.flatMap((s) => s.items).slice(0, 18);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -40,15 +38,6 @@ const jsonLd = {
   <div class="container-page">
     <!-- Hero -->
     <section class="pt-16 pb-14 sm:pt-24 sm:pb-20">
-      <p
-        class="mb-6 inline-flex items-center gap-2 rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-medium text-accent-800 dark:border-accent-800 dark:bg-accent-900/30 dark:text-accent-200"
-      >
-        <span class="relative flex size-2">
-          <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent-400 opacity-75"></span>
-          <span class="relative inline-flex size-2 rounded-full bg-accent-500"></span>
-        </span>
-        {tr("home.status")}
-      </p>
       <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">{tr("home.hello")}</h1>
       <p class="mt-3 font-mono text-sm text-zinc-500 sm:text-base dark:text-zinc-400">{tr("role")}</p>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-300">
@@ -81,15 +70,6 @@ const jsonLd = {
             ><Icon name="mdi:linkedin" class="size-5" /></a
           >
         </div>
-      </div>
-    </section>
-
-    <!-- Now -->
-    <section class="card mb-16 flex gap-4 p-5" aria-labelledby="now">
-      <Icon name="lucide:sparkles" class="mt-0.5 size-5 shrink-0 text-accent-600 dark:text-accent-400" />
-      <div>
-        <h2 id="now" class="text-sm font-semibold">{tr("home.now")}</h2>
-        <p class="mt-1 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{tr("home.nowText")}</p>
       </div>
     </section>
 
@@ -128,12 +108,14 @@ const jsonLd = {
       <PostList posts={posts} lang={lang} />
     </section>
 
-    <!-- Stack -->
-    <section aria-labelledby="stack">
-      <h2 id="stack" class="section-title">{tr("home.stack")}</h2>
-      <ul class="flex flex-wrap gap-2">
-        {stack.map((s) => <li class="chip px-2.5 py-1 text-[13px]">{s}</li>)}
-      </ul>
+    <!-- Contact -->
+    <section class="card p-6 sm:p-8" aria-labelledby="contact">
+      <h2 id="contact" class="text-xl font-semibold">{tr("home.contactTitle")}</h2>
+      <p class="mt-2 max-w-xl text-zinc-600 dark:text-zinc-400">{tr("home.contactText")}</p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <a href={`mailto:${SITE.email}`} class="btn-primary"><Icon name="lucide:mail" />{SITE.email}</a>
+        <a href={SITE.linkedin} target="_blank" rel="me noopener" class="btn-secondary"><Icon name="mdi:linkedin" />LinkedIn</a>
+      </div>
     </section>
   </div>
 </BaseLayout>
