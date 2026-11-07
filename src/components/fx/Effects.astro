@@ -1,0 +1,92 @@
+---
+// Tüm sayfalarda çalışan küçük etkileşim betiği: kaydırınca belirme, spotlight kartlar,
+// sayaçlar, dönen kelimeler ve hero ışığı. Hareket azaltma tercihine uyar.
+---
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Kaydırınca belirme
+  const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    );
+    reveals.forEach((el) => io.observe(el));
+  }
+
+  // Sayaçlar
+  const counters = document.querySelectorAll<HTMLElement>("[data-count]");
+  const runCounter = (el: HTMLElement) => {
+    const target = Number(el.dataset.count);
+    if (reduce) return void (el.textContent = String(target));
+    const start = performance.now();
+    const dur = 1400;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 4);
+      el.textContent = String(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    el.textContent = "0";
+    requestAnimationFrame(tick);
+  };
+  if ("IntersectionObserver" in window) {
+    const co = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            runCounter(e.target as HTMLElement);
+            co.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.5 },
+    );
+    counters.forEach((el) => co.observe(el));
+  }
+
+  // Spotlight kartlar (fareyi izleyen ışık)
+  document.querySelectorAll<HTMLElement>(".spotlight").forEach((card) => {
+    card.addEventListener("pointermove", (ev) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${ev.clientX - r.left}px`);
+      card.style.setProperty("--my", `${ev.clientY - r.top}px`);
+    });
+  });
+
+  // Hero ışığı
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  const light = document.querySelector<HTMLElement>("[data-hero-light]");
+  if (hero && light && !reduce) {
+    hero.addEventListener("pointermove", (ev) => {
+      const r = hero.getBoundingClientRect();
+      light.style.setProperty("--hx", `${ev.clientX - r.left}px`);
+      light.style.setProperty("--hy", `${ev.clientY - r.top}px`);
+      light.dataset.on = "";
+    });
+    hero.addEventListener("pointerleave", () => delete light.dataset.on);
+  }
+
+  // Dönen kelimeler
+  document.querySelectorAll<HTMLElement>("[data-rotator]").forEach((rot) => {
+    const words = [...rot.children] as HTMLElement[];
+    if (words.length < 2 || reduce) return;
+    let i = 0;
+    setInterval(() => {
+      words[i].classList.remove("is-active");
+      i = (i + 1) % words.length;
+      words[i].classList.add("is-active");
+    }, 2400);
+  });
+</script>

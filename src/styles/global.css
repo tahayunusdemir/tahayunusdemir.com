@@ -109,3 +109,140 @@ html.dark .astro-code span {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ───────── Hareket ve efektler (21st.dev tarzı, saf CSS) ───────── */
+@theme {
+  --animate-aurora: aurora 18s ease-in-out infinite alternate;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes aurora {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(6%, -4%, 0) scale(1.15) rotate(12deg); }
+  100% { transform: translate3d(-5%, 5%, 0) scale(0.95) rotate(-8deg); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  60%, 100% { transform: translateX(220%) skewX(-20deg); }
+}
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(10px); transform: translateY(14px); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(60%); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes gradient-pan {
+  to { background-position: 200% center; }
+}
+
+/* Sayfa açılışında kademeli belirme */
+.blur-in {
+  animation: blur-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+}
+
+/* Kaydırınca belirme */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s ease;
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+html:not(.js) .reveal { opacity: 1; transform: none; filter: none; }
+
+/* Hareketli gradyan yazı */
+.text-gradient {
+  background-image: linear-gradient(90deg, var(--color-zinc-900), var(--color-accent-600), var(--color-zinc-900), var(--color-accent-600));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s linear infinite;
+}
+.dark .text-gradient {
+  background-image: linear-gradient(90deg, #fafafa, var(--color-accent-300), #fafafa, var(--color-accent-300));
+  background-size: 200% auto;
+}
+
+/* Dönen kelime */
+.rotator { position: relative; display: inline-block; vertical-align: bottom; }
+.rotator > span { position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none; }
+.rotator > span.is-active { position: relative; opacity: 1; animation: word-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Işıltılı buton */
+.btn-shine { position: relative; overflow: hidden; isolation: isolate; }
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  animation: var(--animate-shimmer);
+  z-index: -1;
+}
+.dark .btn-shine::after { background: linear-gradient(90deg, transparent, rgb(16 185 129 / 0.35), transparent); }
+
+/* Fareyi izleyen ışık + parlayan kenar (spotlight card) */
+.spotlight { position: relative; isolation: isolate; }
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), var(--color-accent-500), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 1;
+}
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgb(16 185 129 / 0.08), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.spotlight:hover::before,
+.spotlight:hover::after { opacity: 1; }
+
+/* Kayan logo şeridi */
+.marquee-mask { mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.marquee-track { animation: var(--animate-marquee); }
+.marquee-mask:hover .marquee-track { animation-play-state: paused; }
+
+/* Hero arka planı */
+.hero-grid {
+  background-image: radial-gradient(var(--color-zinc-300) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 30%, transparent 75%);
+}
+.dark .hero-grid { background-image: radial-gradient(var(--color-zinc-800) 1px, transparent 1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-in, .rotator > span.is-active { animation: none; }
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+  .marquee-track, .btn-shine::after, .text-gradient, [class*="animate-aurora"] { animation: none !important; }
+}

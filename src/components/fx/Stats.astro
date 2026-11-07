@@ -1,0 +1,34 @@
+---
+import type { Lang } from "@/consts";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Yalnızca doğrulanmış sayılar (profil-gercekleri.md).
+const stats = [
+  { value: 140, suffix: "+", tr: "sayfalık web uygulaması", en: "page web app", ctx: "CineMention" },
+  { value: 25, suffix: "", tr: "Gradle modüllü Android", en: "module Android app", ctx: "CineMention" },
+  { value: 160, suffix: "", tr: "sürümlü SQL migration", en: "versioned SQL migrations", ctx: "CineMention" },
+  { value: 81, suffix: "", tr: "ilde yardım noktası", en: "provinces mapped", ctx: "AYİKA" },
+];
+---
+
+<dl class="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 sm:grid-cols-4 dark:border-zinc-800 dark:bg-zinc-800">
+  {
+    stats.map((s, i) => (
+      <div class="reveal bg-white p-5 dark:bg-zinc-950" style={`--i:${i}`}>
+        <dt class="sr-only">{s[lang]}</dt>
+        <dd>
+          <span class="block text-3xl font-bold tracking-tight text-zinc-900 tabular-nums sm:text-4xl dark:text-zinc-50">
+            <span data-count={s.value}>{s.value}</span>
+            {s.suffix}
+          </span>
+          <span class="mt-1 block text-sm text-zinc-600 dark:text-zinc-400">{s[lang]}</span>
+          <span class="mt-2 block font-mono text-[11px] tracking-wide text-accent-700 uppercase dark:text-accent-400">{s.ctx}</span>
+        </dd>
+      </div>
+    ))
+  }
+</dl>

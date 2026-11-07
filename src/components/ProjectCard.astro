@@ -9,14 +9,15 @@ interface Props {
   project: Project;
   lang: Lang;
   showCover?: boolean;
+  wide?: boolean;
 }
-const { project, lang, showCover = false } = Astro.props;
+const { project, lang, showCover = false, wide = false } = Astro.props;
 const { slug } = splitId(project.id);
 const { title, summary, stack, period, cover, coverAlt, status, links } = project.data;
 const href = localizePath(`/projects/${slug}`, lang);
 ---
 
-<article class="card group relative flex flex-col overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700">
+<article class:list={["card spotlight group relative flex w-full flex-col overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1 hover:border-zinc-300 dark:hover:border-zinc-700", wide && "sm:col-span-2"]}>
   {
     showCover && cover ? (
       <div class="aspect-[16/9] overflow-hidden border-b border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
@@ -35,7 +36,7 @@ const href = localizePath(`/projects/${slug}`, lang);
       <span>{period}</span>
       {status && <span class="text-accent-700 dark:text-accent-400">● {status}</span>}
     </div>
-    <h3 class="text-lg font-semibold">
+    <h3 class:list={["font-semibold", wide ? "text-xl sm:text-2xl" : "text-lg"]}>
       <a href={href} class="after:absolute after:inset-0">
         {title}
       </a>

@@ -1,8 +1,9 @@
 import { getIconData, iconToSVG, replaceIDs } from "@iconify/utils";
 import lucide from "@iconify-json/lucide/icons.json" with { type: "json" };
 import mdi from "@iconify-json/mdi/icons.json" with { type: "json" };
+import si from "@iconify-json/simple-icons/icons.json" with { type: "json" };
 
-const sets = { lucide, mdi } as const;
+const sets = { lucide, mdi, si } as const;
 
 /** "lucide:sun" gibi bir ad alıp SVG gövdesini ve viewBox'ı döndürür (build sırasında). */
 export function getIcon(name: string) {

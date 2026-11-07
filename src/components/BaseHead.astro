@@ -99,6 +99,7 @@ const other = otherLang(lang);
 
 <script is:inline>
   (() => {
+    document.documentElement.classList.add("js");
     try {
       const stored = localStorage.getItem("theme");
       const dark =
