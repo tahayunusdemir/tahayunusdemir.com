@@ -1,0 +1,81 @@
+---
+import Panel from "@/components/ui/Panel.astro";
+import { SITE, type Lang } from "@/consts";
+import { htmlLang } from "@/i18n/utils";
+import { getContributions, toWeeks } from "@/lib/github";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const data = await getContributions();
+const weeks = data ? toWeeks(data.days) : [];
+const cell = 10;
+const gap = 3;
+const top = 16;
+const width = weeks.length * (cell + gap) - gap;
+const height = top + 7 * (cell + gap) - gap;
+
+// Ay etiketleri: ayın ilk haftası
+const fmt = new Intl.DateTimeFormat(htmlLang(lang), { month: "short", timeZone: "UTC" });
+const months: { x: number; label: string }[] = [];
+let lastMonth = -1;
+weeks.forEach((w, i) => {
+  const first = w.find(Boolean);
+  if (!first) return;
+  const m = new Date(first.date + "T00:00:00Z").getUTCMonth();
+  if (m !== lastMonth) {
+    if (i < weeks.length - 2) months.push({ x: i * (cell + gap), label: fmt.format(new Date(first.date + "T00:00:00Z")) });
+    lastMonth = m;
+  }
+});
+const total = data?.total ?? 0;
+const nf = new Intl.NumberFormat(htmlLang(lang));
+---
+
+{
+  data && weeks.length > 0 && (
+    <Panel>
+      <h2 class="sr-only">{lang === "tr" ? "GitHub katkıları" : "GitHub contributions"}</h2>
+      <div class="p-4">
+        <a href={SITE.github} target="_blank" rel="noopener" class="block overflow-x-auto" aria-label={`GitHub: ${total}`}>
+          <svg class="contrib min-w-[560px]" viewBox={`0 0 ${width} ${height}`} width="100%" role="img">
+            <title>{lang === "tr" ? `Son bir yılda ${nf.format(total)} katkı` : `${nf.format(total)} contributions in the last year`}</title>
+            {months.map((m) => (
+              <text x={m.x} y="10" class="fill-muted-foreground font-mono" font-size="9">
+                {m.label}
+              </text>
+            ))}
+            {weeks.map((w, i) =>
+              w.map((d, j) =>
+                d ? (
+                  <rect x={i * (cell + gap)} y={top + j * (cell + gap)} width={cell} height={cell} rx="2" data-l={d.level}>
+                    <title>{`${d.date}: ${d.count}`}</title>
+                  </rect>
+                ) : null,
+              ),
+            )}
+          </svg>
+        </a>
+        <div class="mt-3 flex items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
+          <span>
+            {lang === "tr" ? (
+              <>Son bir yılda <span class="text-foreground">{nf.format(total)}</span> katkı</>
+            ) : (
+              <><span class="text-foreground">{nf.format(total)}</span> contributions in the last year</>
+            )}
+          </span>
+          <span class="contrib flex items-center gap-1" aria-hidden="true">
+            {lang === "tr" ? "Az" : "Less"}
+            <svg width="62" height="10">
+              {[0, 1, 2, 3, 4].map((l) => (
+                <rect x={l * 13} y="0" width="10" height="10" rx="2" data-l={l} />
+              ))}
+            </svg>
+            {lang === "tr" ? "Çok" : "More"}
+          </span>
+        </div>
+      </div>
+    </Panel>
+  )
+}

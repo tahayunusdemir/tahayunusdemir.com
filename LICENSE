@@ -24,3 +24,9 @@ SOFTWARE.
 
 Content (src/content/**, src/data/**, public/cv/**, src/assets/**) is
 © Taha Yunus Demir, all rights reserved. Please don't republish it as your own.
+
+---
+
+Design: layout ideas (panels, screen-wide guide lines, striped dividers) are
+inspired by chanhdai.com by Chánh Đại (https://github.com/ncdai/chanhdai.com, MIT).
+No code, names, marks or avatars from that project are used.

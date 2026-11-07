@@ -1,7 +1,6 @@
 ---
 import { SITE, type Lang } from "@/consts";
 import { t } from "@/i18n/ui";
-import { localizePath } from "@/i18n/utils";
 import Icon from "./Icon.astro";
 
 interface Props {
@@ -18,17 +17,14 @@ const socials = [
 ];
 ---
 
-<footer class="mt-24 border-t border-zinc-200 dark:border-zinc-800">
-  <div
-    class="container-page flex flex-col gap-4 py-8 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between dark:text-zinc-400"
-  >
-    <div class="space-y-1">
+<footer class="mt-16">
+  <div class="stripe-divider" aria-hidden="true"></div>
+  <div class="screen-line-top screen-line-bottom flex flex-col gap-3 px-4 py-5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+    <div>
       <p>© {year} {SITE.name}</p>
-      <p>
-        {tr("footer.built")}
-        <a href={SITE.repo} class="underline underline-offset-4 hover:text-zinc-900 dark:hover:text-zinc-100"
-          >{tr("footer.source")}</a
-        >
+      <p class="mt-0.5">
+        {tr("footer.built")}{" "}
+        <a href={SITE.repo} class="link-underline hover:text-foreground">{tr("footer.source")}</a>
       </p>
     </div>
     <ul class="flex items-center gap-1">
@@ -39,7 +35,7 @@ const socials = [
               href={s.href}
               aria-label={s.label}
               title={s.label}
-              class="grid size-9 place-items-center rounded-md transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
+              class="grid size-9 place-items-center rounded-md transition-colors hover:bg-accent-muted hover:text-foreground"
               {...(s.href.startsWith("http") ? { rel: "me noopener", target: "_blank" } : {})}
             >
               <Icon name={s.icon} class="size-[18px]" />
@@ -49,4 +45,5 @@ const socials = [
       }
     </ul>
   </div>
+  <div class="h-8" aria-hidden="true"></div>
 </footer>

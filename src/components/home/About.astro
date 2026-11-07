@@ -1,0 +1,49 @@
+---
+import Panel from "@/components/ui/Panel.astro";
+import type { Lang } from "@/consts";
+import { localizePath } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = (path: string) => localizePath(path, lang);
+---
+
+<Panel id="about" title={lang === "tr" ? "Hakkımda" : "About"}>
+  <div class="space-y-4 p-4 text-[15px] leading-relaxed text-foreground/90 [&_a]:link-underline [&_strong]:font-medium [&_strong]:text-foreground">
+    {
+      lang === "tr" ? (
+        <>
+          <p>
+            Kotlin ve Jetpack Compose ile <strong>Android</strong>, Next.js ve TypeScript ile <strong>full stack web</strong> uygulamaları
+            geliştiriyorum. Ağustos 2026'da film keşfi odaklı sosyal platform <a href="https://cinemention.com" target="_blank" rel="noopener">CineMention</a>'ı
+            kurdum; web uygulaması yayında, Android uygulaması kapalı testte ve ikisini de tek başıma geliştiriyorum.
+          </p>
+          <p>
+            Öncesinde <a href={p("/projects/randevumonline")}>Demiray Software</a>'de randevu ürünü RandevumOnline için WhatsApp ve Instagram üzerinden
+            çalışan mesajlaşma servisini ve konumlu mesai takip sistemini geliştirdim; Bimser'de şirket içi bir Android uygulaması yazdım.
+            Üniversitede TÜBİTAK 2209-A destekli <a href={p("/projects/ayika")}>AYİKA</a> projesini yürüttüm, Erasmus+ döneminde Portekiz'de{" "}
+            <a href={p("/projects/montanha-viva")}>Montanha Viva</a> panelini geliştirdim.
+          </p>
+          <p>Test yazmayı, modüler mimariyi ve otomasyonu seviyorum. Günlük işimde Claude Code kullanıyor, ürettiği kodu testlerle doğruluyorum.</p>
+        </>
+      ) : (
+        <>
+          <p>
+            I build <strong>Android</strong> apps with Kotlin and Jetpack Compose and <strong>full stack web</strong> apps with Next.js and TypeScript.
+            In August 2026 I founded <a href="https://cinemention.com" target="_blank" rel="noopener">CineMention</a>, a film discovery social platform:
+            the web app is live, the Android app is in closed testing, and I build both on my own.
+          </p>
+          <p>
+            Before that, at <a href={p("/projects/randevumonline")}>Demiray Software</a> I built the WhatsApp and Instagram messaging service and a
+            geofenced attendance system for the booking product RandevumOnline, and at Bimser I wrote an internal Android app. At university I led the
+            TÜBİTAK 2209-A supported <a href={p("/projects/ayika")}>AYİKA</a> project and built the <a href={p("/projects/montanha-viva")}>Montanha Viva</a>{" "}
+            dashboard during Erasmus+ in Portugal.
+          </p>
+          <p>I care about tests, modular architecture and automation. I use Claude Code daily and verify what it writes with tests.</p>
+        </>
+      )
+    }
+  </div>
+</Panel>

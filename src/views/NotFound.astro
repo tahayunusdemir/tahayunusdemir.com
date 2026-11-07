@@ -12,10 +12,10 @@ const tr = t(lang);
 ---
 
 <BaseLayout lang={lang} title={tr("404.title")} noindex altHref={localizePath("/", lang === "tr" ? "en" : "tr")}>
-  <div class="container-page py-24 text-center sm:py-32">
-    <p class="font-mono text-sm text-accent-700 dark:text-accent-400">404</p>
-    <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{tr("404.title")}</h1>
-    <p class="mt-4 text-zinc-600 dark:text-zinc-400">{tr("404.text")}</p>
+  <div class="dot-grid screen-line-bottom px-4 py-28 text-center">
+    <p class="font-mono text-sm text-muted-foreground">404</p>
+    <h1 class="mt-3 text-4xl font-medium tracking-tight">{tr("404.title")}</h1>
+    <p class="mt-3 text-muted-foreground">{tr("404.text")}</p>
     <a href={localizePath("/", lang)} class="btn-primary mt-8">{tr("404.home")}</a>
   </div>
 </BaseLayout>

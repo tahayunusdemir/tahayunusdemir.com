@@ -22,17 +22,19 @@ const altHref =
   <head>
     <BaseHead {...props} altHref={altHref} />
   </head>
-  <body class="flex min-h-dvh flex-col">
+  <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-foreground focus:px-3 focus:py-2 focus:text-background"
       >{t(lang)("skip")}</a
     >
-    <Header lang={lang} altHref={altHref ?? localizePath("/", otherLang(lang))} />
-    <main id="main" class="flex-1">
-      <slot />
-    </main>
-    <Footer lang={lang} />
+    <div class="frame flex min-h-dvh flex-col">
+      <Header lang={lang} altHref={altHref ?? localizePath("/", otherLang(lang))} />
+      <main id="main" class="flex-1">
+        <slot />
+      </main>
+      <Footer lang={lang} />
+    </div>
     <Effects />
   </body>
 </html>

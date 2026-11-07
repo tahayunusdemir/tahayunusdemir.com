@@ -1,24 +1,22 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import PageHeader from "@/components/PageHeader.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
+import Separator from "@/components/ui/Separator.astro";
+import Projects from "@/components/home/Projects.astro";
 import type { Lang } from "@/consts";
 import { t } from "@/i18n/ui";
-import { getProjects } from "@/lib/content";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const tr = t(lang);
-const projects = await getProjects(lang);
 ---
 
 <BaseLayout lang={lang} title={tr("projects.title")} description={tr("projects.description")} ogImage={`/og/${lang}/projects.png`}>
-  <div class="container-page">
-    <PageHeader title={tr("projects.title")} description={tr("projects.description")} />
-    <div class="grid gap-5 sm:grid-cols-2">
-      {projects.map((p) => <ProjectCard project={p} lang={lang} />)}
-    </div>
+  <div class="screen-line-bottom px-4 pt-12 pb-6">
+    <h1 class="blur-in text-4xl font-medium tracking-tight">{tr("projects.title")}</h1>
+    <p class="blur-in mt-3 max-w-xl text-muted-foreground" style="--i:1">{tr("projects.description")}</p>
   </div>
+  <Separator />
+  <Projects lang={lang} expanded />
 </BaseLayout>

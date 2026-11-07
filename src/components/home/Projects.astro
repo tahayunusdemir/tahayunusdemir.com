@@ -1,0 +1,76 @@
+---
+import Icon from "@/components/Icon.astro";
+import Panel from "@/components/ui/Panel.astro";
+import type { Lang } from "@/consts";
+import { t } from "@/i18n/ui";
+import { localizePath } from "@/i18n/utils";
+import { getProjects, splitId } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+  expanded?: boolean;
+}
+const { lang, expanded = false } = Astro.props;
+const tr = t(lang);
+const projects = await getProjects(lang);
+---
+
+<Panel id="projects" title={tr("projects.title")} sup={projects.length}>
+  <div class="px-4">
+    {
+      projects.map((p, i) => {
+        const slug = splitId(p.id).slug;
+        const d = p.data;
+        const primary = d.links.live ?? d.links.repo;
+        return (
+          <details class="group screen-line-bottom py-4 last:after:hidden" open={expanded || i === 0}>
+            <summary class="relative block rounded-lg outline-none before:absolute before:-inset-1 before:-z-10 before:rounded-lg before:transition-colors hover:before:bg-accent-muted">
+              <div class="flex items-start gap-3">
+                <span class="icon-tile mt-0.5">
+                  <Icon name={d.links.live ? "lucide:globe" : d.links.repo ? "lucide:folder-git-2" : "lucide:box"} class="size-3.5" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-medium text-balance">{d.title}</h3>
+                  <p class="mt-1 flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
+                    <span>{d.period}</span>
+                    {d.status && (
+                      <>
+                        <span class="h-3.5 w-px bg-line" aria-hidden="true" />
+                        <span>{d.status}</span>
+                      </>
+                    )}
+                  </p>
+                </div>
+                {primary && (
+                  <a
+                    href={primary}
+                    target="_blank"
+                    rel="noopener"
+                    class="relative z-10 grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent-muted hover:text-foreground"
+                    aria-label={d.links.live ? tr("projects.live") : tr("projects.repo")}
+                    title={d.links.live ? tr("projects.live") : tr("projects.repo")}
+                  >
+                    <Icon name={d.links.live ? "lucide:arrow-up-right" : "mdi:github"} class="size-4" />
+                  </a>
+                )}
+                <Icon name="lucide:chevron-down" class="chev mt-1.5 size-4 shrink-0 text-muted-foreground" />
+              </div>
+            </summary>
+            <div class="space-y-3 pt-3 pl-9">
+              <p class="text-[15px] leading-relaxed text-foreground/90">{d.summary}</p>
+              <ul class="flex flex-wrap gap-1.5">
+                {d.stack.map((s) => (
+                  <li class="tag">{s}</li>
+                ))}
+              </ul>
+              <a href={localizePath(`/projects/${slug}`, lang)} class="inline-flex items-center gap-1 text-sm font-medium link-underline">
+                {lang === "tr" ? "Ayrıntılar" : "Details"}
+                <Icon name="lucide:arrow-right" class="size-3.5" />
+              </a>
+            </div>
+          </details>
+        );
+      })
+    }
+  </div>
+</Panel>

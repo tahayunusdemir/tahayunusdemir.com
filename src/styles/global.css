@@ -3,20 +3,46 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+/*
+ * Tasarım dili: panel + ekran boyu kılavuz çizgileri + taralı ayraçlar.
+ * Yerleşim fikri ncdai/chanhdai.com'dan (MIT) esinlenmiştir; marka öğeleri kullanılmamıştır.
+ */
 
-  --color-accent-50: oklch(0.97 0.02 165);
-  --color-accent-100: oklch(0.94 0.05 165);
-  --color-accent-200: oklch(0.88 0.09 165);
-  --color-accent-300: oklch(0.8 0.13 165);
-  --color-accent-400: oklch(0.72 0.15 165);
-  --color-accent-500: oklch(0.64 0.15 165);
-  --color-accent-600: oklch(0.55 0.13 165);
-  --color-accent-700: oklch(0.47 0.11 165);
-  --color-accent-800: oklch(0.39 0.08 165);
-  --color-accent-900: oklch(0.32 0.06 165);
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --border: oklch(0.92 0.004 286.32);
+  --line: color-mix(in oklab, var(--border) 64%, var(--background));
+  --accent-muted: oklch(0.967 0.001 286.375 / 0.7);
+  --link: oklch(0.488 0.243 264.376);
+  --info: oklch(0.6 0.17 160);
+}
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --muted: oklch(0.21 0.006 285.885);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --border: oklch(0.274 0.006 286.033);
+  --line: color-mix(in oklab, var(--border) 72%, var(--background));
+  --accent-muted: oklch(0.274 0.006 286.033 / 0.55);
+  --link: oklch(0.707 0.165 254.624);
+  --info: oklch(0.72 0.16 160);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-line: var(--line);
+  --color-accent-muted: var(--accent-muted);
+  --color-link: var(--link);
+  --color-info: var(--info);
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
 }
 
 @layer base {
@@ -28,221 +54,223 @@
     color-scheme: dark;
   }
   body {
-    @apply bg-white text-zinc-700 dark:bg-zinc-950 dark:text-zinc-300;
-    font-feature-settings: "cv11", "ss01";
+    @apply bg-background font-sans text-foreground;
+    overflow-x: clip;
   }
   ::selection {
-    @apply bg-accent-200 text-zinc-900 dark:bg-accent-800 dark:text-white;
+    @apply bg-foreground text-background;
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-accent-500;
+    @apply outline-2 outline-offset-2 outline-foreground/40;
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply text-zinc-900 dark:text-zinc-50;
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
+  .font-mono {
+    font-feature-settings: "ss01", "zero";
+  }
+}
+
+/* Ekran boyu yatay çizgiler */
+@utility screen-line-top {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100vw;
+    z-index: -1;
+    height: 1px;
+    width: 200vw;
+    background: var(--line);
+  }
+}
+@utility screen-line-bottom {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -100vw;
+    z-index: -1;
+    height: 1px;
+    width: 200vw;
+    background: var(--line);
+  }
+}
+@utility stripe-divider {
+  position: relative;
+  height: 2rem;
+  &::before {
+    content: "";
+    position: absolute;
+    left: -100vw;
+    z-index: -1;
+    height: 100%;
+    width: 200vw;
+    --pattern: color-mix(in oklab, var(--line) 75%, transparent);
+    background-image: repeating-linear-gradient(315deg, var(--pattern) 0, var(--pattern) 1px, transparent 0, transparent 50%);
+    background-size: 10px 10px;
+  }
+}
+@utility dot-grid {
+  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 9%, transparent) 1px, transparent 0);
+  background-size: 8px 8px;
+}
+@utility link-underline {
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+  &:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 @layer components {
-  .container-page {
-    @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
+  .frame {
+    @apply mx-auto w-full max-w-3xl border-x border-line;
   }
-  .link {
-    @apply font-medium text-zinc-900 underline decoration-accent-500/50 decoration-2 underline-offset-4 transition-colors hover:decoration-accent-500 dark:text-zinc-100;
+  .tag {
+    @apply inline-flex items-center rounded-md border border-line bg-muted/60 px-1.5 py-0.5 font-mono text-xs text-muted-foreground;
   }
-  .chip {
-    @apply inline-flex items-center rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400;
+  .icon-tile {
+    @apply grid size-6 shrink-0 place-items-center rounded-md border border-line bg-muted text-muted-foreground;
   }
   .btn-primary,
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors;
+  .btn-outline {
+    @apply inline-flex h-9 items-center gap-2 rounded-lg px-3.5 text-sm font-medium transition-colors;
   }
   .btn-primary {
-    @apply bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white;
+    @apply bg-foreground text-background hover:bg-foreground/85;
   }
-  .btn-secondary {
-    @apply border border-zinc-200 text-zinc-800 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900;
+  .btn-outline {
+    @apply border border-line bg-background hover:bg-accent-muted;
   }
-  .section-title {
-    @apply mb-6 flex items-baseline justify-between gap-4 font-mono text-sm font-medium tracking-wide text-zinc-500 uppercase dark:text-zinc-400;
-  }
-  .card {
-    @apply rounded-xl border border-zinc-200 bg-white transition-colors dark:border-zinc-800 dark:bg-zinc-900/40;
+  .panel-title {
+    @apply text-3xl font-medium tracking-tight;
   }
 }
 
-/* Prose (blog ve proje gövdesi) */
+/* Prose (proje gövdesi) */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--foreground);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-quotes: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-hr: var(--line);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+}
 .prose :where(a):not(:where([class~="not-prose"] *)) {
-  @apply decoration-accent-500/50 decoration-2 underline-offset-4 hover:decoration-accent-500;
+  text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+  text-underline-offset: 3px;
 }
 .prose :where(code):not(:where(pre code)) {
-  @apply rounded bg-zinc-100 px-1.5 py-0.5 font-normal before:content-none after:content-none dark:bg-zinc-800;
+  @apply rounded bg-muted px-1.5 py-0.5 font-normal before:content-none after:content-none;
 }
 .prose :where(pre) {
-  @apply rounded-xl border border-zinc-200 dark:border-zinc-800;
+  @apply rounded-xl border border-line;
 }
-
-/* Shiki çift tema */
 html.dark .astro-code,
 html.dark .astro-code span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ───────── Hareket ve efektler (21st.dev tarzı, saf CSS) ───────── */
-@theme {
-  --animate-aurora: aurora 18s ease-in-out infinite alternate;
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-shimmer: shimmer 2.8s ease-in-out infinite;
-}
-
-@keyframes aurora {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(6%, -4%, 0) scale(1.15) rotate(12deg); }
-  100% { transform: translate3d(-5%, 5%, 0) scale(0.95) rotate(-8deg); }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@keyframes shimmer {
-  0% { transform: translateX(-120%) skewX(-20deg); }
-  60%, 100% { transform: translateX(220%) skewX(-20deg); }
-}
+/* ───────── Hareket ───────── */
 @keyframes blur-in {
-  from { opacity: 0; filter: blur(10px); transform: translateY(14px); }
+  from { opacity: 0; filter: blur(8px); transform: translateY(10px); }
   to { opacity: 1; filter: blur(0); transform: none; }
 }
 @keyframes word-in {
-  from { opacity: 0; transform: translateY(60%); filter: blur(4px); }
+  from { opacity: 0; transform: translateY(70%); filter: blur(4px); }
   to { opacity: 1; transform: none; filter: blur(0); }
 }
-@keyframes gradient-pan {
-  to { background-position: 200% center; }
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
 }
 
-/* Sayfa açılışında kademeli belirme */
 .blur-in {
-  animation: blur-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+  animation: blur-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 100ms + 60ms);
 }
-
-/* Kaydırınca belirme */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(18px);
   filter: blur(6px);
   transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s ease;
-  transition-delay: calc(var(--i, 0) * 90ms);
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.7s ease;
+  transition-delay: calc(var(--i, 0) * 70ms);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
   filter: none;
 }
-html:not(.js) .reveal { opacity: 1; transform: none; filter: none; }
-
-/* Hareketli gradyan yazı */
-.text-gradient {
-  background-image: linear-gradient(90deg, var(--color-zinc-900), var(--color-accent-600), var(--color-zinc-900), var(--color-accent-600));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: gradient-pan 8s linear infinite;
-}
-.dark .text-gradient {
-  background-image: linear-gradient(90deg, #fafafa, var(--color-accent-300), #fafafa, var(--color-accent-300));
-  background-size: 200% auto;
+html:not(.js) .reveal {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
-/* Dönen kelime */
-.rotator { position: relative; display: inline-block; vertical-align: bottom; }
-.rotator > span { position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none; }
-.rotator > span.is-active { position: relative; opacity: 1; animation: word-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+/* Dönen satır (tagline) */
+.rotator { position: relative; display: block; overflow: hidden; }
+.rotator > span { position: absolute; inset: 0 auto auto 0; opacity: 0; white-space: nowrap; pointer-events: none; }
+.rotator > span.is-active { position: relative; opacity: 1; animation: word-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* Işıltılı buton */
-.btn-shine { position: relative; overflow: hidden; isolation: isolate; }
-.btn-shine::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 40%;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
-  animation: var(--animate-shimmer);
-  z-index: -1;
+/* Kapak çizimi */
+.draw :is(path, rect, line, circle) {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: draw 2.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: calc(var(--d, 0) * 1ms);
 }
-.dark .btn-shine::after { background: linear-gradient(90deg, transparent, rgb(16 185 129 / 0.35), transparent); }
+.float { animation: float 6s ease-in-out infinite; }
+.caret { animation: blink 1s steps(1) infinite; }
 
-/* Fareyi izleyen ışık + parlayan kenar (spotlight card) */
-.spotlight { position: relative; isolation: isolate; }
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), var(--color-accent-500), transparent 45%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  z-index: 1;
+/* Açılır kapanır (details) */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+details .chev { transition: transform 0.2s; }
+details[open] .chev { transform: rotate(180deg); }
+:root { interpolate-size: allow-keywords; }
+details::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition: block-size 0.3s cubic-bezier(0.22, 1, 0.36, 1), content-visibility 0.3s allow-discrete;
 }
-.spotlight::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgb(16 185 129 / 0.08), transparent 40%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
-.spotlight:hover::before,
-.spotlight:hover::after { opacity: 1; }
+details[open]::details-content { block-size: auto; }
 
-/* Kayan logo şeridi */
-.marquee-mask { mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-.marquee-track { animation: var(--animate-marquee); }
-.marquee-mask:hover .marquee-track { animation-play-state: paused; }
-
-/* Hero arka planı */
-.hero-grid {
-  background-image: radial-gradient(var(--color-zinc-300) 1px, transparent 1px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 30%, transparent 75%);
-}
-.dark .hero-grid { background-image: radial-gradient(var(--color-zinc-800) 1px, transparent 1px); }
+/* Katkı ızgarası */
+.contrib rect[data-l="0"] { fill: color-mix(in oklab, var(--foreground) 6%, transparent); }
+.contrib rect[data-l="1"] { fill: color-mix(in oklab, var(--foreground) 25%, transparent); }
+.contrib rect[data-l="2"] { fill: color-mix(in oklab, var(--foreground) 45%, transparent); }
+.contrib rect[data-l="3"] { fill: color-mix(in oklab, var(--foreground) 70%, transparent); }
+.contrib rect[data-l="4"] { fill: var(--foreground); }
 
 @media (prefers-reduced-motion: reduce) {
-  .blur-in, .rotator > span.is-active { animation: none; }
+  html { scroll-behavior: auto; }
+  .blur-in, .rotator > span.is-active, .float, .caret { animation: none; }
   .reveal { opacity: 1; transform: none; filter: none; transition: none; }
-  .marquee-track, .btn-shine::after, .text-gradient, [class*="animate-aurora"] { animation: none !important; }
+  .draw :is(path, rect, line, circle) { animation: none; stroke-dashoffset: 0; }
 }

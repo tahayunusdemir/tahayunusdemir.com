@@ -1,0 +1,53 @@
+---
+import Icon from "@/components/Icon.astro";
+import Panel from "@/components/ui/Panel.astro";
+import type { Lang } from "@/consts";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const items = [
+  ["si:kotlin", "Kotlin"],
+  ["si:android", "Android"],
+  ["si:jetpackcompose", "Jetpack Compose"],
+  ["si:typescript", "TypeScript"],
+  ["si:nextdotjs", "Next.js"],
+  ["si:react", "React"],
+  ["si:tailwindcss", "Tailwind CSS"],
+  ["si:supabase", "Supabase"],
+  ["si:postgresql", "PostgreSQL"],
+  ["si:python", "Python"],
+  ["si:fastapi", "FastAPI"],
+  ["si:django", "Django"],
+  ["si:mongodb", "MongoDB"],
+  ["si:redis", "Redis"],
+  ["si:flutter", "Flutter"],
+  ["si:dart", "Dart"],
+  ["si:firebase", "Firebase"],
+  ["si:docker", "Docker"],
+  ["si:githubactions", "GitHub Actions"],
+  ["si:figma", "Figma"],
+] as const;
+---
+
+<Panel id="stack" title={lang === "tr" ? "Teknolojiler" : "Stack"}>
+  <ul class="flex flex-wrap gap-4 p-4">
+    {
+      items.map(([icon, label]) => (
+        <li class="group relative">
+          <span
+            class="grid size-10 place-items-center rounded-lg text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-muted hover:text-foreground"
+            title={label}
+          >
+            <Icon name={icon} class="size-6" label={label} />
+          </span>
+          <span class="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-md bg-foreground px-2 py-0.5 text-xs whitespace-nowrap text-background opacity-0 transition-opacity group-hover:opacity-100">
+            {label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</Panel>

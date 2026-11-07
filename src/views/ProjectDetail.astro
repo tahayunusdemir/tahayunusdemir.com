@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Separator from "@/components/ui/Separator.astro";
 import Icon from "@/components/Icon.astro";
 import type { Lang } from "@/consts";
 import { t } from "@/i18n/ui";
@@ -17,54 +18,63 @@ const tr = t(lang);
 const { slug } = splitId(project.id);
 const { Content } = await render(project);
 const d = project.data;
-const alt = (await hasTranslation("projects", slug, otherLang(lang)))
-  ? localizePath(`/projects/${slug}`, otherLang(lang))
-  : null;
+const alt = (await hasTranslation("projects", slug, otherLang(lang))) ? localizePath(`/projects/${slug}`, otherLang(lang)) : null;
+
+const meta = [
+  { label: tr("projects.role"), value: d.role },
+  { label: tr("projects.period"), value: d.period },
+  { label: "Status", value: d.status ?? "" },
+];
 ---
 
 <BaseLayout lang={lang} title={d.title} description={d.summary} altHref={alt} ogImage={`/og/${lang}/projects/${slug}.png`}>
-  <article class="container-page">
-    <div class="pt-12 pb-8 sm:pt-16">
-      <a href={localizePath("/projects", lang)} class="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
-        <Icon name="lucide:arrow-left" /> {tr("projects.back")}
+  <article>
+    <div class="screen-line-bottom px-4 pt-10 pb-6">
+      <a href={localizePath("/projects", lang)} class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Icon name="lucide:arrow-left" class="size-4" />
+        {tr("projects.back")}
       </a>
-      <h1 class="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">{d.title}</h1>
-      <p class="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">{d.summary}</p>
-
-      <dl class="mt-8 grid gap-4 border-y border-zinc-200 py-5 text-sm sm:grid-cols-3 dark:border-zinc-800">
-        <div>
-          <dt class="font-mono text-xs text-zinc-500 uppercase dark:text-zinc-400">{tr("projects.role")}</dt>
-          <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{d.role}</dd>
-        </div>
-        <div>
-          <dt class="font-mono text-xs text-zinc-500 uppercase dark:text-zinc-400">{tr("projects.period")}</dt>
-          <dd class="mt-1 font-medium text-zinc-900 dark:text-zinc-100">{d.period}</dd>
-        </div>
-        <div>
-          <dt class="font-mono text-xs text-zinc-500 uppercase dark:text-zinc-400">{tr("projects.links")}</dt>
-          <dd class="mt-1 flex flex-wrap gap-x-4 gap-y-1">
-            {d.links.live && <a class="link inline-flex items-center gap-1" href={d.links.live} target="_blank" rel="noopener"><Icon name="lucide:globe" />{tr("projects.live")}</a>}
-            {d.links.repo && <a class="link inline-flex items-center gap-1" href={d.links.repo} target="_blank" rel="noopener"><Icon name="mdi:github" />{tr("projects.repo")}</a>}
-            {d.links.demo && <a class="link inline-flex items-center gap-1" href={d.links.demo} target="_blank" rel="noopener"><Icon name="lucide:play" />{tr("projects.demo")}</a>}
-            {!d.links.repo && <span class="inline-flex items-center gap-1 text-zinc-500"><Icon name="lucide:lock" />{tr("projects.private")}</span>}
-          </dd>
-        </div>
-      </dl>
-      <ul class="mt-5 flex flex-wrap gap-1.5" aria-label={tr("projects.stack")}>
-        {d.stack.map((s) => <li class="chip">{s}</li>)}
-      </ul>
+      <h1 class="blur-in mt-6 text-3xl font-medium tracking-tight sm:text-4xl">{d.title}</h1>
+      <p class="blur-in mt-3 text-[17px] leading-relaxed text-muted-foreground" style="--i:1">{d.summary}</p>
+      <div class="blur-in mt-6 flex flex-wrap gap-2" style="--i:2">
+        {d.links.live && <a class="btn-primary" href={d.links.live} target="_blank" rel="noopener"><Icon name="lucide:globe" class="size-4" />{tr("projects.live")}</a>}
+        {d.links.repo && <a class="btn-outline" href={d.links.repo} target="_blank" rel="noopener"><Icon name="mdi:github" class="size-4" />{tr("projects.repo")}</a>}
+        {d.links.demo && <a class="btn-outline" href={d.links.demo} target="_blank" rel="noopener"><Icon name="lucide:play" class="size-4" />{tr("projects.demo")}</a>}
+        {!d.links.repo && <span class="btn-outline pointer-events-none text-muted-foreground"><Icon name="lucide:lock" class="size-4" />{tr("projects.private")}</span>}
+      </div>
     </div>
+
+    <dl class="screen-line-bottom grid gap-px bg-line sm:grid-cols-3">
+      {
+        meta.filter((m) => m.value).map((m) => (
+          <div class="bg-background px-4 py-3">
+            <dt class="font-mono text-xs text-muted-foreground uppercase">{m.label}</dt>
+            <dd class="mt-1 text-sm font-medium">{m.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <ul class="screen-line-bottom flex flex-wrap gap-1.5 px-4 py-3" aria-label={tr("projects.stack")}>
+      {d.stack.map((s) => <li class="tag">{s}</li>)}
+    </ul>
+
+    <Separator />
 
     {
       d.cover && (
-        <figure class="mb-10 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <Image src={d.cover} alt={d.coverAlt ?? d.title} widths={[768, 1280]} sizes="(min-width: 768px) 720px, 100vw" loading="eager" />
-        </figure>
+        <>
+          <figure class="screen-line-bottom dot-grid p-4">
+            <Image src={d.cover} alt={d.coverAlt ?? d.title} widths={[768, 1280]} sizes="(min-width: 768px) 736px, 100vw" loading="eager" class="rounded-lg border border-line" />
+          </figure>
+          <Separator />
+        </>
       )
     }
 
-    <div class="prose prose-zinc max-w-none dark:prose-invert prose-headings:scroll-mt-20 prose-headings:tracking-tight">
-      <Content />
+    <div class="screen-line-top screen-line-bottom px-4 py-6">
+      <div class="prose max-w-none prose-zinc dark:prose-invert prose-headings:scroll-mt-16 prose-headings:font-medium prose-headings:tracking-tight">
+        <Content />
+      </div>
     </div>
   </article>
 </BaseLayout>

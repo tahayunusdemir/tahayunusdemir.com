@@ -1,0 +1,49 @@
+---
+import Icon from "@/components/Icon.astro";
+import Panel from "@/components/ui/Panel.astro";
+import { SITE, type Lang } from "@/consts";
+import { cvPdf } from "@/data/cv";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tr = lang === "tr";
+
+const links = [
+  { icon: "mdi:github", title: "GitHub", handle: `@${SITE.githubUser}`, href: SITE.github },
+  { icon: "mdi:linkedin", title: "LinkedIn", handle: "in/taha-yunus-demir", href: SITE.linkedin },
+  { icon: "lucide:mail", title: tr ? "E-posta" : "Email", handle: SITE.email, href: `mailto:${SITE.email}` },
+  { icon: "lucide:file-text", title: tr ? "Özgeçmiş (PDF)" : "Resume (PDF)", handle: tr ? "Türkçe · tek sayfa" : "English · one page", href: cvPdf[lang] },
+];
+---
+
+<Panel reveal={false}>
+  <h2 class="sr-only">{tr ? "Bağlantılar" : "Links"}</h2>
+  <ul class="grid gap-px bg-line sm:grid-cols-2">
+    {
+      links.map((l) => (
+        <li class="bg-background">
+          <a
+            href={l.href}
+            class="group flex items-center gap-4 p-4 transition-colors hover:bg-accent-muted"
+            {...(l.href.startsWith("http") ? { target: "_blank", rel: "me noopener" } : {})}
+            {...(l.href.endsWith(".pdf") ? { download: "" } : {})}
+          >
+            <span class="grid size-10 shrink-0 place-items-center rounded-xl border border-line bg-muted">
+              <Icon name={l.icon} class="size-5" />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-medium">{l.title}</span>
+              <span class="block truncate text-sm text-muted-foreground">{l.handle}</span>
+            </span>
+            <Icon
+              name="lucide:arrow-up-right"
+              class="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Panel>

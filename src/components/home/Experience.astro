@@ -1,0 +1,93 @@
+---
+import Icon from "@/components/Icon.astro";
+import Panel from "@/components/ui/Panel.astro";
+import type { Lang } from "@/consts";
+import { experience } from "@/data/cv";
+import { t } from "@/i18n/ui";
+import { formatMonth } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+  /** Tüm pozisyonlar açık başlasın (CV sayfası). */
+  expanded?: boolean;
+}
+const { lang, expanded = false } = Astro.props;
+const tr = t(lang);
+
+function duration(start: string, end: string | null) {
+  const [sy, sm] = start.split("-").map(Number);
+  const now = new Date();
+  const [ey, em] = end ? end.split("-").map(Number) : [now.getUTCFullYear(), now.getUTCMonth() + 1];
+  const months = (ey - sy) * 12 + (em - sm) + 1;
+  const y = Math.floor(months / 12);
+  const m = months % 12;
+  const Y = lang === "tr" ? "yıl" : y > 1 ? "yrs" : "yr";
+  const M = lang === "tr" ? "ay" : "mo";
+  return [y && `${y} ${Y}`, m && `${m} ${M}`].filter(Boolean).join(" ");
+}
+---
+
+<Panel id="experience" title={tr("cv.experience")}>
+  <div class="px-4">
+    {
+      experience.map((job) => (
+        <div class="screen-line-bottom space-y-4 py-4 last:after:hidden">
+          <div class="flex items-start gap-3 sm:items-center">
+            <span class="grid size-6 shrink-0 place-items-center">
+              {job.end === null ? (
+                <span class="relative flex size-2.5">
+                  <span class="absolute inline-flex size-full animate-ping rounded-full bg-info opacity-60" />
+                  <span class="relative inline-flex size-2.5 rounded-full bg-info" />
+                </span>
+              ) : (
+                <span class="size-2 rounded-full bg-muted-foreground/40" />
+              )}
+            </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-x-3 gap-y-1 sm:flex-row sm:items-baseline sm:justify-between">
+              <h3 class="text-xl/6 font-medium">
+                {job.url ? (
+                  <a class="link-underline" href={job.url} target="_blank" rel="noopener">
+                    {job.company}
+                  </a>
+                ) : (
+                  job.company
+                )}
+              </h3>
+              <p class="truncate text-sm text-muted-foreground">{job.location[lang]}</p>
+            </div>
+          </div>
+
+          <details class="group relative" open={expanded || job.end === null}>
+            <summary class="relative block rounded-lg outline-none before:absolute before:-inset-1 before:left-7 before:-z-10 before:rounded-lg before:transition-colors hover:before:bg-accent-muted focus-visible:before:ring-2 focus-visible:before:ring-foreground/20">
+              <div class="mb-1 flex items-start gap-3">
+                <span class="icon-tile">
+                  <Icon name={job.end === null ? "lucide:rocket" : "lucide:code-xml"} class="size-3.5" />
+                </span>
+                <h4 class="flex-1 font-medium text-balance">{job.position[lang]}</h4>
+                <Icon name="lucide:chevron-down" class="chev mt-1 size-4 shrink-0 text-muted-foreground" />
+              </div>
+              <p class="flex flex-wrap items-center gap-2 pl-9 font-mono text-sm text-muted-foreground tabular-nums">
+                <span>
+                  {formatMonth(job.start, lang, tr("cv.present"))} — {job.end ? formatMonth(job.end, lang, tr("cv.present")) : <Icon name="lucide:infinity" class="inline size-4 -translate-y-px" label={tr("cv.present")} />}
+                </span>
+                <span class="h-3.5 w-px bg-line" aria-hidden="true" />
+                <span>{duration(job.start, job.end)}</span>
+              </p>
+            </summary>
+            <ul class="space-y-2 pt-3 pb-1 pl-9 text-[15px] leading-relaxed text-foreground/90">
+              {job.highlights[lang].map((h) => (
+                <li class="relative pl-4 before:absolute before:top-[0.68em] before:left-0 before:size-1 before:rounded-full before:bg-muted-foreground/60">{h}</li>
+              ))}
+            </ul>
+          </details>
+
+          <ul class="flex flex-wrap gap-1.5 pl-9">
+            {job.stack.map((s) => (
+              <li class="tag">{s}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</Panel>

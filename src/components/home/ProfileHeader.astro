@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import avatar from "@/assets/avatar.jpg";
+import { SITE, type Lang } from "@/consts";
+import CoverArt from "./CoverArt.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const taglines =
+  lang === "tr"
+    ? ["Android Geliştirici", "Full Stack Web Geliştirici", "CineMention Kurucusu", "Bilgisayar Mühendisi"]
+    : ["Android Developer", "Full Stack Web Developer", "Founder of CineMention", "Computer Engineer"];
+---
+
+<div class="screen-line-bottom grid grid-cols-[auto_1fr] overflow-y-clip">
+  <figure class="dot-grid relative col-span-2 h-44 overflow-hidden sm:col-span-1 sm:col-start-2 sm:h-52">
+    <CoverArt lang={lang} />
+  </figure>
+
+  <div class="flex flex-col sm:row-span-2 sm:row-start-1">
+    <div class="screen-line-top mt-auto shrink-0 border-r border-line">
+      <div class="blur-in relative size-28 rounded-full min-[24rem]:size-32 sm:size-40" style="--i:0">
+        <Image
+          src={avatar}
+          alt={SITE.name}
+          widths={[160, 320]}
+          sizes="160px"
+          loading="eager"
+          class="block size-full rounded-full object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
+        />
+        <div class="pointer-events-none absolute inset-0 rounded-full ring-1 ring-foreground/15 ring-inset"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex min-w-0 flex-col">
+    <div class="mt-auto border-t border-line">
+      <div class="blur-in flex items-center gap-2 pl-4" style="--i:1">
+        <h1 class="-translate-y-px py-1 text-[1.75rem]/tight font-medium tracking-tight min-[24rem]:text-[2rem]/tight">
+          {SITE.name}
+        </h1>
+      </div>
+      <div class="blur-in flex h-9 items-center border-t border-line pl-4 font-mono text-sm text-muted-foreground" style="--i:2">
+        <span class="rotator" data-rotator aria-label={taglines.join(", ")}>
+          {taglines.map((tl, i) => <span class:list={[i === 0 && "is-active"]} aria-hidden="true">{tl}</span>)}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -78,6 +78,20 @@
     hero.addEventListener("pointerleave", () => delete light.dataset.on);
   }
 
+  // Canlı saat
+  document.querySelectorAll<HTMLElement>("[data-clock]").forEach((el) => {
+    const out = el.querySelector<HTMLElement>("[data-clock-time]");
+    if (!out) return;
+    const fmt = new Intl.DateTimeFormat(el.dataset.lang === "tr" ? "tr-TR" : "en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: el.dataset.tz,
+    });
+    const tick = () => (out.textContent = fmt.format(new Date()));
+    tick();
+    setInterval(tick, 15_000);
+  });
+
   // Dönen kelimeler
   document.querySelectorAll<HTMLElement>("[data-rotator]").forEach((rot) => {
     const words = [...rot.children] as HTMLElement[];

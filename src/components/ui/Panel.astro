@@ -1,0 +1,25 @@
+---
+interface Props {
+  id?: string;
+  title?: string;
+  sup?: string | number;
+  class?: string;
+  reveal?: boolean;
+}
+const { id, title, sup, class: className, reveal = true } = Astro.props;
+---
+
+<section id={id} class:list={["screen-line-top screen-line-bottom scroll-mt-16", reveal && "reveal", className]} aria-labelledby={title && id ? `${id}-title` : undefined}>
+  {
+    title && (
+      <header class="screen-line-bottom px-4 py-1">
+        <h2 id={id ? `${id}-title` : undefined} class="panel-title">
+          {title}
+          {sup !== undefined && <sup class="top-[-0.75em] ml-1 text-sm font-medium tracking-normal text-muted-foreground">{sup}</sup>}
+        </h2>
+        <slot name="description" />
+      </header>
+    )
+  }
+  <slot />
+</section>
