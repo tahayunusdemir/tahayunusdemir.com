@@ -1,0 +1,39 @@
+---
+title: RandevumOnline messaging and attendance
+summary: During my internship at Demiray Software I built a multi tenant WhatsApp and Instagram messaging service and a geofenced attendance system for the booking product RandevumOnline. Both are live.
+role: Software Intern · Demiray Software
+period: Apr 2026 – Jun 2026
+order: 2
+featured: true
+status: Live
+stack: [Python, FastAPI, MongoDB, Next.js, Kotlin, Jetpack Compose, WhatsApp Flows, Groq]
+links:
+  live: https://randevumonline.com
+---
+
+Demiray Software is a three person software studio at Kütahya Tasarım Teknokent that builds SaaS, fintech and AI products. During my internship I added two pieces to [RandevumOnline](https://randevumonline.com), the company's appointment and booking product. Both are live today.
+
+## 1. WhatsApp and Instagram messaging service
+
+A multi tenant service written with Python 3.12, FastAPI, MongoDB (Motor), Pydantic v2 and httpx. One service serves many businesses.
+
+- **WhatsApp Flows booking wizard:** Customers book inside WhatsApp through a 6 screen form, and the appointment is written straight to MongoDB. The flow is deterministic and uses no AI. Flow data is end to end encrypted with RSA-OAEP and AES-128-GCM.
+- **Availability engine:** Computes open slots from working hours, staff leave, existing bookings and room availability.
+- **Instagram:** A menu driven flow with Quick Replies, a Persistent Menu and Ice Breakers. Bookings are completed on the business's own booking page.
+- **Instagram AI assistant (optional):** A model on Groq with tool calling. It answers only from the business's own data (services, prices, hours, address, staff, open slots) and hands the conversation to staff when it can't help.
+- **Setup tooling:** An `.env` wizard, Flow creation and publishing through the Meta API, RSA key generation, Instagram token refresh and one command tenant onboarding, plus documentation for Meta App Review and the Tech Provider process.
+
+## 2. Geofenced attendance system
+
+Tracks whether employees are at work using a geofence.
+
+- **Admin panel:** Next.js 16, React 19, Mantine, NextAuth v5 and MongoDB. Admins draw a circular work area between 10 and 500 metres on a map (react-leaflet, OpenStreetMap) and see each employee's live status and a filterable event history. The panel installs as a PWA and sends web push notifications.
+- **Status engine:** Distinguishes public holidays, leave, off hours, lunch break, no connection (location older than 5 minutes), GPS off, and inside or outside the area, using the Haversine formula for distance. Events are stored only when the status changes or every 15 minutes, and dead push subscriptions are cleaned up automatically.
+- **Android app:** Kotlin, Jetpack Compose, Hilt, Retrofit and DataStore. Location is reported from a foreground service, a 15 minute scheduler runs on WorkManager and AlarmManager, and tracking resumes after the phone reboots.
+
+## Other work
+
+- **Sector announcements:** A Next.js app that collects announcements from KOSGEB, TÜBİTAK, İŞKUR and the Ministry of Industry with scheduled scrapers (node-cron, cheerio) and deduplicates them in MongoDB.
+- **TÜBİTAK 1501 application:** I helped prepare the R&D funding application documents for one of the company's products.
+
+> The source code belongs to the company and is private. This page covers the architecture and my role only.

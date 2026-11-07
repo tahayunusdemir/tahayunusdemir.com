@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tahayunusdemir-com",
+  "compatibility_date": "2026-11-01",
+  // Saf statik site: Worker kodu yok, yalnızca dist/ klasörü sunulur.
+  // Statik dosya istekleri ücretsiz ve sınırsızdır.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Alan adı Cloudflare'de olduğu için DNS kaydı ve sertifika deploy sırasında otomatik oluşur.
+  "routes": [
+    { "pattern": "tahayunusdemir.com", "custom_domain": true }
+  ],
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": { "enabled": true }
+}

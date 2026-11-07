@@ -1,0 +1,38 @@
+---
+title: Montanha Viva Yönetim Paneli
+summary: Erasmus+ döneminde Universidade da Beira Interior'da geliştirdiğim full stack platform. IoT hava istasyonu grafikleri, QR kodla puan ve ödül sistemi, bitki ve yürüyüş rotası ansiklopedisi, YOLO ile bitki tanıma.
+role: Full Stack Geliştirici
+period: Haz 2025 – Tem 2025
+order: 4
+featured: true
+status: Tamamlandı
+stack: [React, TypeScript, Material UI, TanStack Query, Django REST Framework, PostgreSQL, YOLO, Docker]
+cover: ../../../assets/projects/montanha-viva-dashboard.png
+coverAlt: Montanha Viva yönetim panelinin ana ekranı. Rota ve bitki ansiklopedisi, bitki tanıma, QR kod, puan ve sensör verisi kartları.
+links:
+  repo: https://github.com/tahayunusdemir/montanha-viva-dashboard
+  demo: https://youtu.be/YbRXzuAOJUc
+---
+
+Montanha Viva, Portekiz'deki Universidade da Beira Interior'ın (UBI) C-MAST merkezi öncülüğünde Serra da Gardunha bölgesinde yürütülen bir turizm, teknoloji ve sürdürülebilirlik projesi. Erasmus+ dönemimde aldığım **Projeto (14353)** dersi kapsamında, danışmanım Nuno Pereira'nın gözetiminde bu proje için bir yönetim paneli geliştirdim. Tek öğrencili bir projeydi; teknik rapor yazdım ve jüri önünde sözlü olarak savundum.
+
+## Özellikler
+
+- **Sensör verisi:** IoT hava istasyonlarının zaman serisi verisi; istasyon ve tarihe göre filtrelenen grafikler ve CSV dışa aktarma.
+- **QR ödülleri:** Rotalardaki QR kodları okutup puan kazanma ve puanları indirim kuponuna çevirme.
+- **Ansiklopedi:** Serra da Gardunha'nın bitkileri ve yürüyüş rotaları; rotalarda mesafe, süre, zorluk, rakım ve GPX dosyası.
+- **Bitki tanıma:** Ultralytics YOLO ile kendi eğittiğim model. Django'daki bir uç nokta fotoğrafı alıp güven skorlarıyla sıralanmış tahminler döndürüyor.
+- **Hava tahmini:** Portekiz Meteoroloji Enstitüsü'nün (IPMA) API'si, önbellekli.
+- Geri bildirim sistemi, aydınlık ve karanlık tema.
+
+## Güvenlik
+
+E-posta tabanlı özel kullanıcı modeli ve JWT: kısa ömürlü access token, **HttpOnly çerezde saklanan refresh token** ve çıkışta token kara listesi. Kullanıcı ve yönetici rolleri ayrı panellere sahip.
+
+## Teknolojiler
+
+- **Ön yüz:** React 19, TypeScript, Vite, Material UI 7, TanStack Query, Zustand, React Hook Form, html5-qrcode.
+- **Backend:** Django 5.2, Django REST Framework, SimpleJWT, pytest.
+- **Veri ve dağıtım:** PostgreSQL, Docker, Gunicorn, Nginx, Render, pre-commit.
+
+Kaynak kod [GitHub'da](https://github.com/tahayunusdemir/montanha-viva-dashboard), demo videosu [YouTube'da](https://youtu.be/YbRXzuAOJUc).

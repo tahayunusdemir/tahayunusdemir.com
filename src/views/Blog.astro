@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import PostList from "@/components/PostList.astro";
+import Icon from "@/components/Icon.astro";
+import type { Lang } from "@/consts";
+import { t } from "@/i18n/ui";
+import { localizePath } from "@/i18n/utils";
+import { getPosts, tagSlug } from "@/lib/content";
+
+interface Props {
+  lang: Lang;
+  tag?: string;
+}
+const { lang, tag } = Astro.props;
+const tr = t(lang);
+const all = await getPosts(lang);
+const posts = tag ? all.filter((p) => p.data.tags.some((x) => tagSlug(x) === tagSlug(tag))) : all;
+const tags = [...new Set(all.flatMap((p) => p.data.tags))].sort((a, b) => a.localeCompare(b, lang));
+const title = tag ? `#${tag}` : tr("blog.title");
+const description = tag ? `${tag} ${tr("blog.taggedWith")}` : tr("blog.description");
+---
+
+<BaseLayout lang={lang} title={title} description={description} ogImage={`/og/${lang}/blog.png`} altHref={tag ? localizePath("/blog", lang === "tr" ? "en" : "tr") : undefined}>
+  <div class="container-page">
+    <PageHeader title={title} description={description}>
+      <div class="mt-6 flex flex-wrap items-center gap-2">
+        {tag && (
+          <a href={localizePath("/blog", lang)} class="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
+            <Icon name="lucide:arrow-left" /> {tr("blog.back")}
+          </a>
+        )}
+        {!tag &&
+          tags.map((x) => (
+            <a href={localizePath(`/blog/tags/${tagSlug(x)}`, lang)} class="chip hover:border-zinc-300 hover:text-zinc-900 dark:hover:border-zinc-700 dark:hover:text-zinc-100">
+              #{x}
+            </a>
+          ))}
+        {!tag && (
+          <a href={localizePath("/rss.xml", lang)} class="chip gap-1 hover:text-zinc-900 dark:hover:text-zinc-100">
+            <Icon name="lucide:rss" class="size-3" /> {tr("blog.rss")}
+          </a>
+        )}
+      </div>
+    </PageHeader>
+    <PostList posts={posts} lang={lang} />
+  </div>
+</BaseLayout>

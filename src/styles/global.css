@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+  --color-accent-50: oklch(0.97 0.02 165);
+  --color-accent-100: oklch(0.94 0.05 165);
+  --color-accent-200: oklch(0.88 0.09 165);
+  --color-accent-300: oklch(0.8 0.13 165);
+  --color-accent-400: oklch(0.72 0.15 165);
+  --color-accent-500: oklch(0.64 0.15 165);
+  --color-accent-600: oklch(0.55 0.13 165);
+  --color-accent-700: oklch(0.47 0.11 165);
+  --color-accent-800: oklch(0.39 0.08 165);
+  --color-accent-900: oklch(0.32 0.06 165);
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-white text-zinc-700 dark:bg-zinc-950 dark:text-zinc-300;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection {
+    @apply bg-accent-200 text-zinc-900 dark:bg-accent-800 dark:text-white;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-500;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-zinc-900 dark:text-zinc-50;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
+  }
+  .link {
+    @apply font-medium text-zinc-900 underline decoration-accent-500/50 decoration-2 underline-offset-4 transition-colors hover:decoration-accent-500 dark:text-zinc-100;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 font-mono text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400;
+  }
+  .btn-primary,
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white;
+  }
+  .btn-secondary {
+    @apply border border-zinc-200 text-zinc-800 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900;
+  }
+  .section-title {
+    @apply mb-6 flex items-baseline justify-between gap-4 font-mono text-sm font-medium tracking-wide text-zinc-500 uppercase dark:text-zinc-400;
+  }
+  .card {
+    @apply rounded-xl border border-zinc-200 bg-white transition-colors dark:border-zinc-800 dark:bg-zinc-900/40;
+  }
+}
+
+/* Prose (blog ve proje gövdesi) */
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  @apply decoration-accent-500/50 decoration-2 underline-offset-4 hover:decoration-accent-500;
+}
+.prose :where(code):not(:where(pre code)) {
+  @apply rounded bg-zinc-100 px-1.5 py-0.5 font-normal before:content-none after:content-none dark:bg-zinc-800;
+}
+.prose :where(pre) {
+  @apply rounded-xl border border-zinc-200 dark:border-zinc-800;
+}
+
+/* Shiki çift tema */
+html.dark .astro-code,
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

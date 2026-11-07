@@ -1,0 +1,109 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Icon from "@/components/Icon.astro";
+import { SITE, type Lang } from "@/consts";
+import { t } from "@/i18n/ui";
+import { localizePath } from "@/i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tr = t(lang);
+const p = (path: string) => localizePath(path, lang);
+
+const contacts = [
+  { icon: "lucide:mail", label: "E-mail", value: SITE.email, href: `mailto:${SITE.email}` },
+  { icon: "mdi:linkedin", label: "LinkedIn", value: "in/taha-yunus-demir", href: SITE.linkedin },
+  { icon: "mdi:github", label: "GitHub", value: SITE.githubUser, href: SITE.github },
+];
+---
+
+<BaseLayout lang={lang} title={tr("about.title")} description={tr("about.description")} ogImage={`/og/${lang}/about.png`}>
+  <div class="container-page">
+    <PageHeader title={tr("about.title")} />
+
+    <div class="prose prose-zinc max-w-none text-[17px] dark:prose-invert">
+      {
+        lang === "tr" ? (
+          <>
+            <p>
+              Ben Taha Yunus Demir. Kütahya Dumlupınar Üniversitesi'nde Bilgisayar Mühendisliği okudum; 2024/25 bahar
+              döneminde Erasmus+ ile Portekiz'deki Universidade da Beira Interior'da web programlama, bilgi güvenliği ve
+              dağıtık sistemler dersleri aldım. Şu an Ankara'dayım.
+            </p>
+            <p>
+              İki alanda üretiyorum: <strong>Android</strong> (Kotlin, Jetpack Compose, Hilt) ve{" "}
+              <strong>full stack web</strong> (Next.js, TypeScript, PostgreSQL; backend tarafında Django ve FastAPI).
+              Ağustos 2026'da film keşfi odaklı sosyal platform <a href="https://cinemention.com">CineMention</a>'ı
+              kurdum; web uygulaması yayında, Android uygulaması kapalı testte.
+            </p>
+            <p>
+              Öncesinde <a href={p("/projects/randevumonline")}>Demiray Software</a>'de randevu ürünü RandevumOnline için
+              WhatsApp ve Instagram üzerinden çalışan mesajlaşma servisini ve konumlu mesai takip sistemini geliştirdim;{" "}
+              Bimser'de şirket içi bir Android görev takip uygulaması yazdım. Üniversitede TÜBİTAK 2209-A destekli{" "}
+              <a href={p("/projects/ayika")}>AYİKA</a> projesini yürüttüm, Erasmus döneminde{" "}
+              <a href={p("/projects/montanha-viva")}>Montanha Viva</a> panelini geliştirdim.
+            </p>
+            <p>
+              Test yazmayı, modüler mimariyi ve otomasyonu (CI, sürüm akışları) seviyorum. Günlük işimde Claude Code
+              kullanıyorum ve ürettiği kodu testlerle doğruluyorum. Junior Android ve full stack pozisyonlarına açığım;
+              İstanbul'a taşınabilirim.
+            </p>
+          </>
+        ) : (
+          <>
+            <p>
+              I'm Taha Yunus Demir. I studied Computer Engineering at Kütahya Dumlupınar University and spent the 2024/25
+              spring semester at Universidade da Beira Interior in Portugal on Erasmus+, taking web programming,
+              information security and distributed systems. I'm based in Ankara, Türkiye.
+            </p>
+            <p>
+              I build in two areas: <strong>Android</strong> (Kotlin, Jetpack Compose, Hilt) and{" "}
+              <strong>full stack web</strong> (Next.js, TypeScript, PostgreSQL, with Django and FastAPI on the backend).
+              In August 2026 I founded <a href="https://cinemention.com">CineMention</a>, a film discovery social
+              platform: the web app is live and the Android app is in closed testing.
+            </p>
+            <p>
+              Before that, at <a href={p("/projects/randevumonline")}>Demiray Software</a> I built the WhatsApp and
+              Instagram messaging service and a geofenced attendance system for the booking product RandevumOnline, and at
+              Bimser I wrote an internal Android task tracking app. At university I led the TÜBİTAK 2209-A supported{" "}
+              <a href={p("/projects/ayika")}>AYİKA</a> project and built the{" "}
+              <a href={p("/projects/montanha-viva")}>Montanha Viva</a> dashboard during Erasmus.
+            </p>
+            <p>
+              I care about tests, modular architecture and automation (CI, release workflows). I use Claude Code daily and
+              verify what it writes with tests. I'm open to junior Android and full stack roles and to relocating to
+              Istanbul.
+            </p>
+          </>
+        )
+      }
+    </div>
+
+    <section class="mt-16" aria-labelledby="contact">
+      <h2 id="contact" class="section-title">{tr("about.contact")}</h2>
+      <p class="mb-6 max-w-2xl text-zinc-600 dark:text-zinc-400">{tr("about.contactText")}</p>
+      <ul class="grid gap-3 sm:grid-cols-3">
+        {
+          contacts.map((c) => (
+            <li>
+              <a
+                href={c.href}
+                class="card flex items-center gap-3 p-4 hover:border-zinc-300 dark:hover:border-zinc-700"
+                {...(c.href.startsWith("http") ? { target: "_blank", rel: "me noopener" } : {})}
+              >
+                <Icon name={c.icon} class="size-5 shrink-0 text-zinc-500" />
+                <span class="min-w-0">
+                  <span class="block text-xs text-zinc-500 dark:text-zinc-400">{c.label}</span>
+                  <span class="block truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">{c.value}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

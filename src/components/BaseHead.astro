@@ -1,0 +1,123 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "@/styles/global.css";
+import { SITE, type Lang } from "@/consts";
+import { htmlLang, localizePath, otherLang } from "@/i18n/utils";
+import { t } from "@/i18n/ui";
+
+export interface HeadProps {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  type?: "website" | "article";
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
+  /** Diğer dildeki karşılığın yolu; null ise hreflang eklenmez. */
+  altHref: string | null;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  lang,
+  title,
+  description,
+  ogImage,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  tags = [],
+  altHref,
+  noindex = false,
+  jsonLd,
+} = Astro.props as HeadProps;
+
+const tr = t(lang);
+const fullTitle = title ? `${title} · ${SITE.name}` : tr("meta.title");
+const desc = description ?? tr("meta.description");
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const image = new URL(ogImage ?? `/og/${lang}/default.png`, SITE.url).href;
+const rss = new URL(localizePath("/rss.xml", lang), SITE.url).href;
+const beacon = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
+const other = otherLang(lang);
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={desc} />
+<meta name="author" content={SITE.name} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+
+<link rel="alternate" hreflang={htmlLang(lang)} href={canonical} />
+{
+  altHref && (
+    <link rel="alternate" hreflang={htmlLang(other)} href={new URL(altHref, SITE.url).href} />
+  )
+}
+{
+  altHref && (
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(lang === "tr" ? Astro.url.pathname : altHref, SITE.url).href}
+    />
+  )
+}
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+<link rel="alternate" type="application/rss+xml" title={`${SITE.name} RSS`} href={rss} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={lang === "tr" ? "tr_TR" : "en_US"} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title ?? SITE.name} />
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={desc} />
+<meta name="twitter:image" content={image} />
+
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+<script is:inline>
+  (() => {
+    try {
+      const stored = localStorage.getItem("theme");
+      const dark =
+        stored === "dark" ||
+        (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.classList.toggle("dark", dark);
+    } catch {
+      /* depolama kapalıysa sistem teması kullanılır */
+    }
+  })();
+</script>
+
+{
+  beacon && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token: beacon })}
+    />
+  )
+}

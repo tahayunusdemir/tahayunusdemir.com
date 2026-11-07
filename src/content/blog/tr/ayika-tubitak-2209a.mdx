@@ -1,0 +1,73 @@
+---
+title: "AYİKA: TÜBİTAK 2209-A ile bir afet koordinasyon sistemi"
+description: Proje yürütücüsü olduğum TÜBİTAK 2209-A projesi AYİKA'nın başvurudan sonuç raporuna kadar süreci ve web, backend ve mobil taraftaki mimari kararlar.
+pubDate: 2026-11-07
+tags: [tübitak, django, react, flutter]
+---
+
+AYİKA (Acil Yardım ve İhtiyaç Koordinasyon Ağı), afet anında gönüllüleri, yardım kargolarını ve yardım noktalarını tek bir sistemde toplamayı hedefleyen bir proje. Kütahya Dumlupınar Üniversitesi'nde TÜBİTAK 2209-A programı kapsamında, proje yürütücüsü olarak yürüttüm. Bu yazıda süreci ve teknik tarafı özetliyorum. Kaynak kod [GitHub'da](https://github.com/tahayunusdemir/ayika) açık.
+
+## TÜBİTAK 2209-A nedir?
+
+2209-A, TÜBİTAK'ın lisans öğrencilerinin araştırma projelerini desteklediği program. Başvuruyu bir öğrenci, akademik danışmanıyla birlikte yapıyor; panel değerlendirmesinden geçen projeler destekleniyor. Bu bir burs ya da ödül değil, **proje desteği**: proje bitince bir sonuç raporu yazıyor ve kabul ettiriyorsunuz.
+
+## Zaman çizelgesi
+
+| Adım | Tarih |
+| --- | --- |
+| Başvuru (2023/2 dönemi) | 13 Kasım 2023 |
+| Destek kararı | 22 Mart 2024 |
+| Proje süresi | Mart 2024 – Haziran 2025 |
+| Sonuç | Sonuç raporu kabul edildi |
+
+Ekipte iki proje ortağım (Harun Celen ve Hamza Erdal) ve akademik danışmanımız Durmuş Özdemir vardı. Yürütücü olarak TÜBİTAK'a karşı sorumlu kişi bendim; işleri bölmek, takvimi tutturmak ve raporu yazmak benim görevimdi. Kod tarafında web panelinin ve mobil uygulamanın ilgili bölümlerini ben geliştirdim.
+
+## Sistem üç parçadan oluşuyor
+
+```text
+          ┌────────────────────────┐
+          │  Web (React + MUI)     │  tanıtım sayfası, kullanıcı ve yönetici paneli
+          └───────────┬────────────┘
+                      │ REST
+┌──────────────┐  ┌───┴────────────────────┐   ┌──────────────┐
+│ Mobil        │──│  Django REST Framework │───│ PostgreSQL   │
+│ (Flutter)    │  │  + django-filter       │   │ Redis        │
+└──────────────┘  └────────────────────────┘   └──────────────┘
+                 Docker Compose + Nginx
+```
+
+### Backend: Django REST Framework
+
+Backend, Django 5.1 ve Django REST Framework üzerinde. Veriler PostgreSQL 15'te, Redis 7 de yanında. Üç temel kavram var: **gönüllüler**, **kargolar** ve **istatistikler**.
+
+- Her gönüllüye otomatik bir numara veriliyor. Gönüllüler toplama, taşıma, dağıtım ya da karma tipinde olabiliyor.
+- Her kargoya `AYK` formatında bir takip numarası üretiliyor. Kargo hazırlanıyor, yolda, teslim edildi ya da iptal edildi durumlarından birinde. Gönderen isterse anonim kalabiliyor.
+- Kargo takibi ve gönüllü kaydı **herkese açık** uç noktalar. Afet anında yardım gönderen birinin hesap açmadan, yalnızca numarayla kargosunun nerede olduğunu görebilmesi gerekiyor.
+- Yönetici paneli için şehir, gönüllü, zaman, ağırlık ve hacim bazında istatistik uç noktaları var.
+
+### Web: React ve Material UI
+
+Web uygulaması React 19, TypeScript, Vite ve Material UI 7 ile yazıldı. Üç yüzü var:
+
+1. **Tanıtım sayfası:** 81 ili gösteren etkileşimli bir Türkiye haritası (Leaflet), SSS ve kargo takip kutusu.
+2. **Kullanıcı paneli:** Profil, şifre değiştirme, aydınlık ve karanlık tema, gönüllü kartviziti indirme.
+3. **Yönetici paneli:** Material UI Data Grid ile gönüllü ve kargo tabloları (arama, filtre, durum güncelleme, toplama gönüllüsü atama) ve MUI Charts ile analiz grafikleri: kargo durumu ve tipi, ağırlık ve hacim, şehirler arası akış, gönüllü aktivitesi.
+
+Kimlik doğrulamada güçlü şifre politikası ve e-postayla şifre sıfırlama var.
+
+### Mobil: Flutter
+
+Mobil uygulama, sahadaki insanın en çok ihtiyaç duyacağı şeye odaklanıyor: **en yakın yardım noktası nerede?**
+
+- OpenStreetMap üzerinde 81 ildeki yardım noktaları.
+- GPS ile konum alıp en yakın noktayı bulma ve yol tarifi.
+- `AYK` numarasıyla kargo sorgulama.
+- Material 3, aydınlık ve karanlık tema.
+
+## Altyapı
+
+Backend, veritabanı, Redis ve web ön yüzü Docker Compose ile tek komutla ayağa kalkıyor; önde Nginx duruyor. Sistemi 100'den fazla kullanıcıyı kaldıracak şekilde tasarladık.
+
+## Geriye kalan
+
+AYİKA benim için ilk "uçtan uca" projeydi: bir fikri başvuru dosyasına, takvime, üç ayrı uygulamaya ve sonunda kabul edilen bir rapora dönüştürmek. Kodun tamamına [GitHub'dan](https://github.com/tahayunusdemir/ayika), proje özetine [proje sayfasından](/projects/ayika) ulaşabilirsiniz.

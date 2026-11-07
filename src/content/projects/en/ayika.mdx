@@ -1,0 +1,48 @@
+---
+title: AYİKA · Emergency Aid and Needs Coordination Network
+summary: A disaster coordination system I led with TÜBİTAK 2209-A support. A web panel and REST API for volunteers and aid shipments, plus a Flutter app mapping aid points in all 81 provinces.
+role: Project Leader
+period: Mar 2024 – Jun 2025
+order: 3
+featured: true
+status: Completed
+stack: [React, TypeScript, Material UI, Django REST Framework, PostgreSQL, Redis, Flutter, Docker]
+links:
+  repo: https://github.com/tahayunusdemir/ayika
+---
+
+AYİKA moves emergency aid and needs coordination online during disasters. It brings volunteer management, aid shipment tracking and a map of aid points together in one system.
+
+The project was selected after panel review in the 2023/2 call of the **TÜBİTAK 2209-A Research Project Support Programme for Undergraduate Students**. I was the Project Leader, the student who applied and was accountable to TÜBİTAK. Harun Celen and Hamza Erdal were project partners and Durmuş Özdemir was our academic advisor. The project ran from March 2024 to June 2025 and its final report was accepted.
+
+We designed the system for 100+ users. Besides leading the team, I built parts of the web panel and the mobile app myself.
+
+## Web app
+
+React 19, TypeScript, Material UI 7 (Data Grid, Charts), Vite and Leaflet.
+
+- **Landing page:** An interactive map of Türkiye's 81 provinces, features, FAQ and shipment tracking.
+- **Authentication:** A strong password policy, password reset by email and a volunteer sign up form.
+- **Admin panel:** Volunteer management (create, edit, status, search and filter), shipment management (create, update status, assign a pickup volunteer) and analytics charts: shipment status and type, weight and volume, flows between cities and volunteer activity.
+
+## Backend
+
+Django 5.1, Django REST Framework, django-filter, PostgreSQL 15 and Redis 7.
+
+- Automatic volunteer numbers and four volunteer types: pickup, transport, distribution and mixed.
+- Automatic shipment numbers in an `AYK` format, an anonymous sender option, origin and destination provinces, weight and volume.
+- Public endpoints for shipment tracking and volunteer sign up, and statistics endpoints by city, volunteer, time, weight and volume.
+
+## Mobile app
+
+Flutter and Material 3.
+
+- Aid points in all 81 provinces on OpenStreetMap.
+- GPS location, nearest aid point search and directions.
+- Shipment lookup by `AYK` number, light and dark themes.
+
+## Infrastructure
+
+Every service runs with Docker and Docker Compose behind Nginx. The source code is [on GitHub](https://github.com/tahayunusdemir/ayika).
+
+I wrote about the project in [the AYİKA post](/en/blog/ayika-tubitak-2209a).

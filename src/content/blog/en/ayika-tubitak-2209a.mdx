@@ -1,0 +1,73 @@
+---
+title: "AYİKA: building a disaster coordination system with TÜBİTAK 2209-A"
+description: How AYİKA, the TÜBİTAK 2209-A project I led, went from application to accepted final report, and the architecture behind its web, backend and mobile apps.
+pubDate: 2026-11-07
+tags: [tübitak, django, react, flutter]
+---
+
+AYİKA (Emergency Aid and Needs Coordination Network) brings volunteers, aid shipments and aid points together in one system for disaster situations. I led it as Project Leader under TÜBİTAK's 2209-A programme at Kütahya Dumlupınar University. This post summarises the process and the technical side. The source code is [on GitHub](https://github.com/tahayunusdemir/ayika).
+
+## What is TÜBİTAK 2209-A?
+
+2209-A is the programme through which TÜBİTAK, Türkiye's national research council, supports research projects by undergraduate students. A student applies together with an academic advisor and projects that pass panel review get funded. It's **project support**, not a scholarship or an award: when the project ends you write a final report and get it accepted.
+
+## Timeline
+
+| Step | Date |
+| --- | --- |
+| Application (2023/2 call) | 13 November 2023 |
+| Funding decision | 22 March 2024 |
+| Project period | March 2024 – June 2025 |
+| Outcome | Final report accepted |
+
+The team was two project partners (Harun Celen and Hamza Erdal) and our academic advisor Durmuş Özdemir. As Project Leader I was the one accountable to TÜBİTAK: splitting the work, keeping the schedule and writing the report. On the code side I built parts of the web panel and the mobile app.
+
+## Three parts
+
+```text
+          ┌────────────────────────┐
+          │  Web (React + MUI)     │  landing page, user and admin panels
+          └───────────┬────────────┘
+                      │ REST
+┌──────────────┐  ┌───┴────────────────────┐   ┌──────────────┐
+│ Mobile       │──│  Django REST Framework │───│ PostgreSQL   │
+│ (Flutter)    │  │  + django-filter       │   │ Redis        │
+└──────────────┘  └────────────────────────┘   └──────────────┘
+                 Docker Compose + Nginx
+```
+
+### Backend: Django REST Framework
+
+The backend runs on Django 5.1 and Django REST Framework, with data in PostgreSQL 15 and Redis 7 alongside. There are three core concepts: **volunteers**, **shipments** and **statistics**.
+
+- Every volunteer gets an automatic number and one of four types: pickup, transport, distribution or mixed.
+- Every shipment gets a tracking number in an `AYK` format and is preparing, in transit, delivered or cancelled. Senders can stay anonymous.
+- Shipment tracking and volunteer sign up are **public** endpoints. Someone sending aid during a disaster should be able to see where it is with just a number, without creating an account.
+- The admin panel reads statistics endpoints grouped by city, volunteer, time, weight and volume.
+
+### Web: React and Material UI
+
+The web app is built with React 19, TypeScript, Vite and Material UI 7. It has three faces:
+
+1. **Landing page:** An interactive map of Türkiye's 81 provinces (Leaflet), an FAQ and a shipment tracking box.
+2. **User panel:** Profile, password change, light and dark themes and a downloadable volunteer card.
+3. **Admin panel:** Volunteer and shipment tables built on MUI Data Grid (search, filters, status updates, assigning a pickup volunteer) and analytics with MUI Charts: shipment status and type, weight and volume, flows between cities and volunteer activity.
+
+Authentication includes a strong password policy and password reset by email.
+
+### Mobile: Flutter
+
+The mobile app focuses on what someone in the field needs most: **where is the nearest aid point?**
+
+- Aid points in all 81 provinces on OpenStreetMap.
+- GPS location, nearest aid point search and directions.
+- Shipment lookup by `AYK` number.
+- Material 3 with light and dark themes.
+
+## Infrastructure
+
+The backend, database, Redis and web frontend start with a single Docker Compose command behind Nginx. We designed the system for 100+ users.
+
+## Looking back
+
+AYİKA was my first end to end project: turning an idea into an application, a schedule, three separate apps and finally an accepted report. The full code is [on GitHub](https://github.com/tahayunusdemir/ayika) and there's a summary on the [project page](/en/projects/ayika).

@@ -1,0 +1,12 @@
+---
+import View from "@/views/ProjectDetail.astro";
+import { getProjects, splitId, type Project } from "@/lib/content";
+
+export async function getStaticPaths() {
+  const items = await getProjects("en");
+  return items.map((project) => ({ params: { slug: splitId(project.id).slug }, props: { project } }));
+}
+const { project } = Astro.props as { project: Project };
+---
+
+<View lang="en" project={project} />

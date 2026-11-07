@@ -1,0 +1,42 @@
+---
+title: CineMention
+summary: Kurup tek başıma geliştirdiğim film keşfi odaklı sosyal platform. Web uygulaması yayında, Android uygulaması kapalı testte; ikisi aynı Supabase backend'ini kullanıyor.
+role: Kurucu ve Yazılım Geliştirici
+period: Ağu 2026 – devam ediyor
+order: 1
+featured: true
+status: Yayında
+stack: [Next.js, TypeScript, Supabase, Kotlin, Jetpack Compose, Hilt, Tailwind CSS, PostgreSQL]
+links:
+  live: https://cinemention.com
+---
+
+CineMention, film izleyenlerin yeni film keşfettiği, zevk olarak eşleştiği ve birbiriyle konuştuğu bir sosyal platform. Fikir de geliştirme de bana ait; ürünü uzaktan ve tek geliştirici olarak büyütüyorum. Web uygulaması [cinemention.com](https://cinemention.com) adresinde yayında ve 30'u aşkın kullanıcıya ulaştı. Android uygulaması kapalı testte.
+
+## Neler var
+
+- Kaydırmalı film önerisi ve zevk eşleşmesi
+- Günlük film bulmacaları
+- Kulüpler, tartışmalar ve mesajlaşma
+- Blog editörü
+- Türkçe ve İngilizce arayüz, PWA desteği
+
+## Web uygulaması
+
+Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 ve shadcn/ui üzerine kurulu. 140'tan fazla sayfası var.
+
+- **Veritabanı:** Supabase (PostgreSQL). Şema 160 sürümlü SQL migration ile evriliyor. Bildirim gönderme, hesap silme ve katalog gibi işler Supabase Edge Functions'ta çalışıyor.
+- **Test:** 124 birim test dosyası (Vitest) ve 8 uçtan uca test (Playwright).
+- **Teslimat:** GitHub Actions ile CI, Docker imajı ve ayrı bir veritabanı yayın akışı. Commit'ler Conventional Commits kuralına uyuyor; commitlint, ESLint ve Prettier pre-commit aşamasında çalışıyor.
+
+## Android uygulaması
+
+Kotlin, Jetpack Compose, Material 3, Hilt ve Navigation 3 ile yazıldı; Supabase'e Kotlin istemcisiyle bağlanıyor.
+
+- **Modüler yapı:** 25 Gradle modülü: `app`, `baselineprofile`, 9 `core` ve 14 `feature` modülü. Ortak derleme ayarları `build-logic` içindeki convention plugin'lerde.
+- **Giriş ve bildirim:** Credential Manager ile Google girişi, Firebase Cloud Messaging ile push bildirimleri.
+- **Kalite:** 119 Kotlin test dosyası, Robolectric ve Roborazzi ile ekran görüntüsü testleri, baseline profile, dev ve prod flavor'ları, Spotless ve ktlint.
+
+Mimarinin ayrıntılarını [CineMention Android: 25 modülle Compose uygulaması](/blog/cinemention-android-moduler-mimari) yazısında anlattım.
+
+> Kaynak kod gizli. Bu sayfada yalnızca mimariyi ve kendi rolümü anlatıyorum.

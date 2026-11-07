@@ -1,0 +1,42 @@
+---
+title: CineMention
+summary: A film discovery social platform I founded and develop on my own. The web app is live, the Android app is in closed testing, and both share one Supabase backend.
+role: Founder and Software Developer
+period: Aug 2026 – present
+order: 1
+featured: true
+status: Live
+stack: [Next.js, TypeScript, Supabase, Kotlin, Jetpack Compose, Hilt, Tailwind CSS, PostgreSQL]
+links:
+  live: https://cinemention.com
+---
+
+CineMention is a social platform where film lovers discover new films, match on taste and talk to each other. The idea and the code are mine; I run it remotely as the only developer. The web app is live at [cinemention.com](https://cinemention.com) with 30+ users, and the Android app is in closed testing.
+
+## Features
+
+- Swipe based film recommendations and taste matching
+- Daily film puzzles
+- Clubs, discussions and messaging
+- A blog editor
+- Turkish and English UI, installable as a PWA
+
+## Web app
+
+Built on Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 and shadcn/ui, with more than 140 pages.
+
+- **Database:** Supabase (PostgreSQL). The schema evolves through 160 versioned SQL migrations. Push delivery, account deletion and the catalog run as Supabase Edge Functions.
+- **Testing:** 124 unit test files (Vitest) and 8 end to end tests (Playwright).
+- **Delivery:** GitHub Actions CI, a Docker image and a separate database release workflow. Commits follow Conventional Commits, with commitlint, ESLint and Prettier in pre-commit.
+
+## Android app
+
+Written in Kotlin with Jetpack Compose, Material 3, Hilt and Navigation 3, talking to Supabase through the Kotlin client.
+
+- **Modular structure:** 25 Gradle modules: `app`, `baselineprofile`, 9 `core` and 14 `feature` modules, with shared build logic in convention plugins under `build-logic`.
+- **Sign in and push:** Google sign in via Credential Manager and push notifications via Firebase Cloud Messaging.
+- **Quality:** 119 Kotlin test files, screenshot tests with Robolectric and Roborazzi, a baseline profile, dev and prod flavors, Spotless and ktlint.
+
+I wrote about the architecture in [CineMention Android: a Compose app in 25 modules](/en/blog/cinemention-android-moduler-mimari).
+
+> The source code is private. This page covers the architecture and my role only.

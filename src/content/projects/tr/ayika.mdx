@@ -1,0 +1,48 @@
+---
+title: AYİKA · Acil Yardım ve İhtiyaç Koordinasyon Ağı
+summary: TÜBİTAK 2209-A desteğiyle yürüttüğüm afet koordinasyon sistemi. Gönüllü ve yardım kargosu yönetimi için web paneli, REST API ve 81 ildeki yardım noktalarını gösteren Flutter uygulaması.
+role: Proje Yürütücüsü
+period: Mar 2024 – Haz 2025
+order: 3
+featured: true
+status: Tamamlandı
+stack: [React, TypeScript, Material UI, Django REST Framework, PostgreSQL, Redis, Flutter, Docker]
+links:
+  repo: https://github.com/tahayunusdemir/ayika
+---
+
+AYİKA, afet durumlarında yardım ve ihtiyaç koordinasyonunu dijital ortama taşıyan bir sistem. Gönüllü yönetimini, yardım kargosu takibini ve yardım noktalarının harita üzerinde gösterimini tek bir yerde topluyor.
+
+Proje, **TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı**'nın 2023/2 döneminde panel değerlendirmesinden geçerek desteklendi. Başvuruyu yapan ve TÜBİTAK'a karşı sorumlu olan proje yürütücüsü bendim. Ekipte proje ortakları Harun Celen ve Hamza Erdal, akademik danışman olarak Durmuş Özdemir vardı. Proje Mart 2024'te başladı, Haziran 2025'te tamamlandı ve sonuç raporu kabul edildi.
+
+Sistemi 100'den fazla kullanıcıyı kaldıracak şekilde tasarladık. Ekibi yönetmenin yanında web panelinin ve mobil uygulamanın ilgili bölümlerini kendim geliştirdim.
+
+## Web uygulaması
+
+React 19, TypeScript, Material UI 7 (Data Grid, Charts), Vite ve Leaflet.
+
+- **Tanıtım sayfası:** 81 ili gösteren etkileşimli Türkiye haritası, özellikler, SSS ve kargo takip alanı.
+- **Kimlik doğrulama:** Güçlü şifre politikası, e-postayla şifre sıfırlama ve gönüllü kayıt formu.
+- **Yönetici paneli:** Gönüllü yönetimi (ekleme, düzenleme, durum, arama ve filtre), kargo yönetimi (oluşturma, durum güncelleme, toplama gönüllüsü atama) ve analiz grafikleri: kargo durumu ve tipi, ağırlık ve hacim, şehirler arası akış, gönüllü aktivitesi.
+
+## Backend
+
+Django 5.1, Django REST Framework, django-filter, PostgreSQL 15 ve Redis 7.
+
+- Otomatik gönüllü numarası; toplama, taşıma, dağıtım ve karma gönüllü tipleri.
+- `AYK` formatında otomatik kargo numarası, anonim gönderici seçeneği, çıkış ve varış ili, ağırlık ve hacim.
+- Herkese açık kargo takibi ve gönüllü kaydı uç noktaları; şehir, gönüllü, zaman, ağırlık ve hacim bazında istatistik uç noktaları.
+
+## Mobil uygulama
+
+Flutter ve Material 3.
+
+- OpenStreetMap üzerinde 81 ildeki yardım noktaları.
+- GPS ile konum alma, en yakın yardım noktasını bulma ve yol tarifi.
+- `AYK` numarasıyla kargo sorgulama, aydınlık ve karanlık tema.
+
+## Altyapı
+
+Tüm servisler Docker ve Docker Compose ile ayağa kalkıyor, Nginx önde duruyor. Kaynak kod [GitHub'da](https://github.com/tahayunusdemir/ayika) açık.
+
+Projenin hikâyesini [AYİKA yazısında](/blog/ayika-tubitak-2209a) anlattım.

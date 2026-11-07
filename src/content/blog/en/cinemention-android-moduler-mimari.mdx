@@ -1,0 +1,63 @@
+---
+title: "CineMention Android: a Compose app in 25 modules"
+description: Why and how I split CineMention's Android app into 25 Gradle modules, how convention plugins keep the build config in one place, and how testing is set up.
+pubDate: 2026-11-07
+tags: [android, kotlin, jetpack-compose, architecture]
+---
+
+[CineMention](https://cinemention.com) is a film discovery social platform I founded and develop on my own. The web app is live and the Android app is in closed testing. This post walks through the skeleton of the Android side: modules, dependencies and tests. The source is private, so I share the structure and the decisions rather than real files.
+
+## Stack
+
+- **Kotlin** and **Jetpack Compose** with Material 3.
+- **Hilt** for dependency injection.
+- **Navigation 3** for moving between screens.
+- The **Supabase Kotlin client** (on Ktor 3.5), sharing one Supabase backend with the web app.
+- **Google sign in** with Credential Manager and **push notifications** with Firebase Cloud Messaging.
+
+## Why so many modules?
+
+The app has 25 modules in total:
+
+```text
+app                  → entry point and navigation graph
+baselineprofile      → generates the baseline profile for startup performance
+core:*   (9 modules) → shared layers the features build on
+feature:* (14 modules) → each product feature in its own module
+build-logic/convention → shared Gradle setup (convention plugins)
+```
+
+That may look like a lot for a one person project. I have three reasons:
+
+1. **Boundaries become visible.** A module can only use what its build file explicitly declares as a dependency. Shared code collects under `core`, and the "I'll just call it from here for now" shortcut gets naturally harder.
+2. **Build times.** When I change one feature, only that module and its dependents rebuild.
+3. **Test scope.** Tests can be written and run per module, so testing a feature doesn't mean booting the whole app.
+
+## Convention plugins
+
+Repeating the same Android, Kotlin, Compose and Hilt setup in 25 build files is tedious and error prone. Instead I defined that setup once as Gradle plugins under `build-logic/convention`. A feature module's build file shrinks to a few lines. A simplified example:
+
+```kotlin
+// feature/xyz/build.gradle.kts (simplified example)
+plugins {
+    alias(libs.plugins.app.android.feature) // Android library + Compose + Hilt + common deps
+}
+
+android { namespace = "com.example.feature.xyz" }
+```
+
+When the SDK version, Compose settings or lint rules change, I change them in one place.
+
+## Testing
+
+The Android side has 119 Kotlin test files:
+
+- **Robolectric** runs Android tests on the JVM without an emulator.
+- **Roborazzi** adds screenshot tests. It records an image of a Compose screen, and if a later change alters the pixels, the test fails. It's great for catching accidental design changes.
+- The **baseline profile** module precompiles the app's startup path so the first launch is faster.
+
+Code style is automated with **Spotless** and **ktlint**. The app has separate **dev** and **prod** flavors. CI and release workflows run on GitHub Actions.
+
+## Wrapping up
+
+This structure keeps me organised while running web and Android at the same time as the only developer. You can try the product at [cinemention.com](https://cinemention.com) or read the summary on the [project page](/en/projects/cinemention).

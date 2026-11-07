@@ -1,0 +1,70 @@
+---
+title: "How I built this site with Astro and Cloudflare Workers"
+description: Why I wrote my personal site with Astro, how I host it on Cloudflare Workers for free, and how the bilingual setup works.
+pubDate: 2026-11-07
+tags: [astro, cloudflare, web]
+---
+
+When I registered `tahayunusdemir.com` on Cloudflare, the goal was clear: one fast, bilingual, low maintenance place for my resume, projects and writing. These are my notes on the decisions and why I made them.
+
+## Requirements
+
+- **Fast and simple:** No server, database or sessions. Plain static HTML is enough.
+- **Two languages:** Turkish at the root, English under `/en/`, with a one click switch to the same page in the other language.
+- **Easy to write:** Posts are MDX files, so publishing is opening a file and running `git push`.
+- **Free hosting on my own domain.**
+- **One source of truth:** The resume page and the PDF resume come from the same data, so they can't contradict each other.
+
+## Why Astro?
+
+I use Next.js every day, but for a content site Astro felt like the better fit:
+
+- It ships **zero JavaScript** by default. The only client side code on this site is the theme toggle.
+- **Content collections** make posts and projects typed. If the frontmatter doesn't match the schema, the build fails, so I can't forget a date or tags.
+- It has built in **i18n routing**. Serving Turkish at the root and English under `/en/` takes a few lines of config.
+
+Also, Cloudflare brought the Astro team on board in January 2026. Astro stays open source, but official backing is reassuring when you deploy to Cloudflare.
+
+## Why Workers instead of Pages?
+
+Cloudflare's docs now point new projects to Workers. For a static site that doesn't mean writing Worker code. Pointing `wrangler.jsonc` at the build output is enough:
+
+```jsonc
+{
+  "name": "tahayunusdemir-com",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "tahayunusdemir.com", "custom_domain": true }]
+}
+```
+
+Static asset requests are free and unlimited. Since the domain already lives on Cloudflare, `custom_domain: true` creates the DNS record and certificate during deploy. Shipping is one command:
+
+```bash
+npm run build && npx wrangler deploy
+```
+
+## Two languages
+
+Every page is generated twice: `/projects` and `/en/projects`. The page files are thin shells; the real template lives in a view component that takes a `lang` prop. UI strings live in one dictionary file.
+
+For posts, the folder decides the language: `content/blog/tr/` and `content/blog/en/`. Two posts with the same file name count as translations of each other, which adds the right `hreflang` links to the head and makes the language switch jump to the translated post. If a post has no translation, the switch goes to that language's blog index.
+
+## Social images
+
+The preview cards you see when sharing a link on LinkedIn (Open Graph images) are generated at build time. [Satori](https://github.com/vercel/satori) turns a simple layout into SVG and `sharp` converts it to PNG, one image per page and per post. I had to load Inter's `latin-ext` subset as well, otherwise Turkish letters like "ğ" and "ş" rendered as boxes.
+
+## Small things that matter
+
+- **Dark mode:** Follows the system preference and remembers your choice. A tiny script runs before the page renders, so there's no white flash.
+- **SEO:** A sitemap, canonical links, `hreflang` tags, an RSS feed per language and structured data (JSON-LD) for the person and each post.
+- **`llms.txt`:** A short plain text summary of the site for AI search tools.
+- **Privacy:** No cookies. Visitor stats come from Cloudflare Web Analytics, which doesn't collect personal data.
+- **My phone number isn't on the site.** I removed it from the PDF resume I publish here too.
+
+## What's next
+
+Next I'll write about CineMention's Android architecture, the AYİKA project and what I learned during my internships. The site's source code is [on GitHub](https://github.com/tahayunusdemir/tahayunusdemir.com); if you spot a bug, let me know.

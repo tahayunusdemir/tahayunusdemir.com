@@ -1,0 +1,22 @@
+---
+import { getIcon } from "@/lib/icons";
+
+interface Props {
+  name: string;
+  class?: string;
+  label?: string;
+}
+const { name, class: className = "size-4", label } = Astro.props;
+const { viewBox, body } = getIcon(name);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={viewBox}
+  class={className}
+  aria-hidden={label ? undefined : "true"}
+  aria-label={label}
+  role={label ? "img" : undefined}
+  fill="none"
+  set:html={body}
+/>

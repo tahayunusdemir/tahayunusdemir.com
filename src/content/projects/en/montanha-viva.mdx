@@ -1,0 +1,38 @@
+---
+title: Montanha Viva Dashboard
+summary: A full stack platform I built at Universidade da Beira Interior during Erasmus+. IoT weather station charts, QR code points and rewards, a flora and trail encyclopedia and YOLO plant identification.
+role: Full Stack Developer
+period: Jun 2025 – Jul 2025
+order: 4
+featured: true
+status: Completed
+stack: [React, TypeScript, Material UI, TanStack Query, Django REST Framework, PostgreSQL, YOLO, Docker]
+cover: ../../../assets/projects/montanha-viva-dashboard.png
+coverAlt: The Montanha Viva dashboard home screen with cards for the route and flora encyclopedias, plant identifier, QR codes, points and sensor data.
+links:
+  repo: https://github.com/tahayunusdemir/montanha-viva-dashboard
+  demo: https://youtu.be/YbRXzuAOJUc
+---
+
+Montanha Viva is a tourism, technology and sustainability project in Serra da Gardunha, Portugal, led by the C-MAST centre at Universidade da Beira Interior (UBI). For the **Projeto (14353)** course during my Erasmus+ semester, I built a dashboard for it under the supervision of my advisor Nuno Pereira. It was a solo student project; I wrote a technical report and defended it orally before a jury.
+
+## Features
+
+- **Sensor data:** Time series data from IoT weather stations, with charts filtered by station and date and CSV export.
+- **QR rewards:** Scan QR codes along the trails to earn points and redeem them for discount coupons.
+- **Encyclopedia:** Plants and hiking trails of Serra da Gardunha, with distance, duration, difficulty, elevation and GPX files for each trail.
+- **Plant identification:** A model I trained with Ultralytics YOLO. A Django endpoint takes a photo and returns predictions ranked by confidence.
+- **Weather forecast:** The Portuguese weather institute (IPMA) API, cached.
+- A feedback system and light and dark themes.
+
+## Security
+
+A custom email based user model and JWT auth: short lived access tokens, **refresh tokens stored in HttpOnly cookies** and token blacklisting on logout. Users and admins get separate dashboards.
+
+## Stack
+
+- **Frontend:** React 19, TypeScript, Vite, Material UI 7, TanStack Query, Zustand, React Hook Form, html5-qrcode.
+- **Backend:** Django 5.2, Django REST Framework, SimpleJWT, pytest.
+- **Data and deployment:** PostgreSQL, Docker, Gunicorn, Nginx, Render, pre-commit.
+
+The source code is [on GitHub](https://github.com/tahayunusdemir/montanha-viva-dashboard) and there's a [demo video on YouTube](https://youtu.be/YbRXzuAOJUc).
