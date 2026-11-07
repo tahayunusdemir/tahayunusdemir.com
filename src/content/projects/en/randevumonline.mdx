@@ -20,7 +20,7 @@ A multi tenant service written with Python 3.12, FastAPI, MongoDB (Motor), Pydan
 - **WhatsApp Flows booking wizard:** Customers book inside WhatsApp through a 6 screen form, and the appointment is written straight to MongoDB. The flow is deterministic and uses no AI. Flow data is end to end encrypted with RSA-OAEP and AES-128-GCM.
 - **Availability engine:** Computes open slots from working hours, staff leave, existing bookings and room availability.
 - **Instagram:** A menu driven flow with Quick Replies, a Persistent Menu and Ice Breakers. Bookings are completed on the business's own booking page.
-- **Instagram AI assistant (optional):** A model on Groq with tool calling. It answers only from the business's own data (services, prices, hours, address, staff, open slots) and hands the conversation to staff when it can't help.
+- **Instagram AI assistant (optional):** A model on Groq with tool calling. It answers only from the business's own data (services, prices, hours, address, staff, open slots), books and cancels appointments, and hands the conversation to staff when it can't help.
 - **Setup tooling:** An `.env` wizard, Flow creation and publishing through the Meta API, RSA key generation, Instagram token refresh and one command tenant onboarding, plus documentation for Meta App Review and the Tech Provider process.
 
 ## 2. Geofenced attendance system

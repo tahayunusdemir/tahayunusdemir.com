@@ -20,7 +20,7 @@ Python 3.12, FastAPI, MongoDB (Motor), Pydantic v2 ve httpx ile yazılmış, ço
 - **WhatsApp Flows randevu sihirbazı:** Müşteri WhatsApp içinde 6 ekranlı bir form üzerinden randevu alıyor; randevu doğrudan MongoDB'de oluşuyor. Akış deterministik, yapay zekâ kullanmıyor. Flow verisi RSA-OAEP ve AES-128-GCM ile uçtan uca şifreli.
 - **Müsaitlik modülü:** Boş saatleri çalışma saatleri, personel izinleri, mevcut randevular ve oda durumundan hesaplıyor.
 - **Instagram:** Quick Replies, Persistent Menu ve Ice Breakers ile menü tabanlı bir akış. Randevu, işletmenin web sitesindeki rezervasyon sayfasında tamamlanıyor.
-- **Instagram yapay zekâ asistanı (isteğe bağlı):** Groq üzerinden araç çağırma (tool use) kullanan bir model. Yalnızca işletmenin kendi verisiyle (hizmet, fiyat, çalışma saati, adres, personel, uygun saatler) yanıt veriyor, çözemediğinde konuşmayı personele aktarıyor.
+- **Instagram yapay zekâ asistanı (isteğe bağlı):** Groq üzerinden araç çağırma (tool use) kullanan bir model. Yalnızca işletmenin kendi verisiyle (hizmet, fiyat, çalışma saati, adres, personel, uygun saatler) yanıt veriyor, randevu oluşturup iptal edebiliyor, çözemediğinde konuşmayı personele aktarıyor.
 - **Kurulum araçları:** `.env` sihirbazı, Meta API ile Flow oluşturma ve yayınlama, RSA anahtar üretimi, Instagram token yenileme ve tek komutla yeni işletme ekleme. Meta App Review ve Tech Provider süreçleri için dokümantasyon da hazırladım.
 
 ## 2. Konumlu mesai takip sistemi

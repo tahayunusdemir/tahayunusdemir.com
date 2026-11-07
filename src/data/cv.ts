@@ -66,13 +66,13 @@ export const experience: Experience[] = [
       tr: [
         "Şirketin randevu ürünü RandevumOnline'da canlıda olan, 6 ekranlı, uçtan uca şifreli WhatsApp Flows formuyla randevu alan çok kiracılı mesajlaşma servisini geliştirdim (Python, FastAPI, MongoDB).",
         "Çalışma saati, izin, çakışma ve oda durumundan boş saatleri hesaplayan müsaitlik modülünü yazdım.",
-        "İşletme verisiyle yanıt veren, gerekirse personele aktaran Instagram yapay zekâ asistanı ekledim (Groq).",
+        "İşletme verisiyle yanıt veren, randevu oluşturan ve gerekirse personele aktaran Instagram yapay zekâ asistanı ekledim (Groq).",
         "RandevumOnline'da canlıda olan konumlu mesai takip sistemini oluşturdum: haritada iş alanı tanımlanan Next.js paneli, ön plan servisiyle konum gönderen Kotlin ve Jetpack Compose uygulaması, anlık bildirimler.",
       ],
       en: [
         "Built a multi tenant messaging service (Python, FastAPI, MongoDB) for the booking product RandevumOnline that takes appointments over WhatsApp through a 6 screen, end to end encrypted WhatsApp Flows form.",
         "Wrote the availability engine that computes open slots from working hours, staff leave, bookings and rooms.",
-        "Added an Instagram DM assistant (Groq, tool calling) that answers from business data and hands off to staff.",
+        "Added an Instagram DM assistant (Groq, tool calling) that answers from business data, books appointments and hands off to staff.",
         "Developed a geofenced attendance system with a Next.js map panel, a Kotlin and Jetpack Compose app reporting location from a foreground service, and push alerts on status changes.",
       ],
     },
@@ -129,7 +129,7 @@ export const cvProjects: CvProject[] = [
       tr: "Full Stack Geliştirici · Universidade da Beira Interior, Erasmus+ dönem projesi",
       en: "Full Stack Developer · Universidade da Beira Interior, Erasmus+ semester project",
     },
-    start: "2025-06",
+    start: "2025-02",
     end: "2025-07",
     highlights: {
       tr: [

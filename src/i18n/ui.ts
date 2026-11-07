@@ -2,9 +2,9 @@ import type { Lang } from "@/consts";
 
 export const ui = {
   tr: {
-    "meta.title": "Taha Yunus Demir · Yazılım Geliştirici",
+    "meta.title": "Taha Yunus Demir · Android ve Full Stack Geliştirici",
     "meta.description":
-      "Kotlin ve Jetpack Compose ile Android, Next.js ve TypeScript ile full stack web uygulamaları geliştiren bilgisayar mühendisi. Projeler, deneyim ve yazılar.",
+      "Kotlin ve Jetpack Compose ile Android, Next.js ve TypeScript ile full stack web uygulamaları geliştiren bilgisayar mühendisi. Projeler, deneyim ve CV.",
     "role": "Yazılım Geliştirici · Android ve Full Stack Web",
     "nav.home": "Ana sayfa",
     "nav.projects": "Projeler",
@@ -19,7 +19,6 @@ export const ui = {
     "home.tagline": "Android ve web için uçtan uca ürünler geliştiriyorum.",
     "home.taglinePre": "",
     "home.taglinePost": "için uçtan uca ürünler geliştiriyorum.",
-    "home.stats": "Rakamlarla",
     "home.marquee": "Çalıştığım teknolojiler",
     "home.intro":
       "Ankara'da yaşayan bir bilgisayar mühendisiyim. Kotlin ve Jetpack Compose ile Android, Next.js ve TypeScript ile full stack web uygulamaları geliştiriyorum. Şu sıralar film keşfi odaklı sosyal platformum CineMention'ı tek başıma büyütüyorum.",
@@ -85,9 +84,9 @@ export const ui = {
     "404.home": "Ana sayfaya dön",
   },
   en: {
-    "meta.title": "Taha Yunus Demir · Software Developer",
+    "meta.title": "Taha Yunus Demir · Android and Full Stack Developer",
     "meta.description":
-      "Computer engineer building Android apps with Kotlin and Jetpack Compose and full stack web apps with Next.js and TypeScript. Projects, experience and writing.",
+      "Computer engineer building Android apps with Kotlin and Jetpack Compose and full stack web apps with Next.js and TypeScript. Projects, experience and CV.",
     "role": "Software Developer · Android and Full Stack Web",
     "nav.home": "Home",
     "nav.projects": "Projects",
@@ -102,7 +101,6 @@ export const ui = {
     "home.tagline": "I build Android and web products end to end.",
     "home.taglinePre": "I build",
     "home.taglinePost": "products end to end.",
-    "home.stats": "By the numbers",
     "home.marquee": "Tech I work with",
     "home.intro":
       "I'm a computer engineer based in Ankara, Türkiye. I build Android apps with Kotlin and Jetpack Compose and full stack web apps with Next.js and TypeScript. Right now I'm growing CineMention, a film discovery social platform I founded and develop on my own.",
