@@ -1,2 +1,8 @@
 /about / 301
 /en/about /en/ 301
+/blog / 301
+/blog/* / 301
+/en/blog /en/ 301
+/en/blog/* /en/ 301
+/rss.xml / 301
+/en/rss.xml /en/ 301

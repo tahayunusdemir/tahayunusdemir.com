@@ -1,12 +1,11 @@
 import type { APIRoute } from "astro";
 import { SITE } from "@/consts";
 import { experience, summary } from "@/data/cv";
-import { getPosts, getProjects, splitId } from "@/lib/content";
+import { getProjects, splitId } from "@/lib/content";
 
 // LLM'ler ve yapay zekâ arama motorları için sitenin kısa, makine okunur özeti (llmstxt.org).
 export const GET: APIRoute = async () => {
   const projects = await getProjects("en");
-  const posts = await getPosts("en");
   const body = `# ${SITE.name}
 
 > ${summary.en}
@@ -26,10 +25,6 @@ ${experience.map((e) => `- ${e.company}: ${e.position.en} (${e.start} to ${e.end
 ## Projects
 
 ${projects.map((p) => `- [${p.data.title}](${SITE.url}/en/projects/${splitId(p.id).slug}/): ${p.data.summary}`).join("\n")}
-
-## Writing
-
-${posts.map((p) => `- [${p.data.title}](${SITE.url}/en/blog/${splitId(p.id).slug}/): ${p.data.description}`).join("\n")}
 
 The site is also available in Turkish at ${SITE.url}/.
 `;

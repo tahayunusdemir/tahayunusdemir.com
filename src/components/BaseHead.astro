@@ -40,7 +40,6 @@ const fullTitle = title ? `${title} · ${SITE.name}` : tr("meta.title");
 const desc = description ?? tr("meta.description");
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const image = new URL(ogImage ?? `/og/${lang}/default.png`, SITE.url).href;
-const rss = new URL(localizePath("/rss.xml", lang), SITE.url).href;
 const beacon = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
 const other = otherLang(lang);
 ---
@@ -74,7 +73,6 @@ const other = otherLang(lang);
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
-<link rel="alternate" type="application/rss+xml" title={`${SITE.name} RSS`} href={rss} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta property="og:type" content={type} />

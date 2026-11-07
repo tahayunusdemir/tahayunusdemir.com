@@ -14,7 +14,6 @@ const current = stripLang(Astro.url.pathname).replace(/\/$/, "") || "/";
 
 const nav = [
   { href: "/projects", label: tr("nav.projects") },
-  { href: "/blog", label: tr("nav.blog") },
   { href: "/cv", label: tr("nav.cv") },
 ];
 const isActive = (href: string) => current === href || current.startsWith(href + "/");

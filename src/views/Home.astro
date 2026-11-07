@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import PostList from "@/components/PostList.astro";
 import ExperienceList from "@/components/ExperienceList.astro";
 import Icon from "@/components/Icon.astro";
 import HeroBackground from "@/components/fx/HeroBackground.astro";
@@ -10,7 +9,7 @@ import TechMarquee from "@/components/fx/TechMarquee.astro";
 import { SITE, type Lang } from "@/consts";
 import { t } from "@/i18n/ui";
 import { formatMonth, localizePath } from "@/i18n/utils";
-import { getPosts, getProjects } from "@/lib/content";
+import { getProjects } from "@/lib/content";
 import { education, experience, skills } from "@/data/cv";
 
 interface Props {
@@ -19,7 +18,6 @@ interface Props {
 const { lang } = Astro.props;
 const tr = t(lang);
 const projects = (await getProjects(lang)).filter((p) => p.data.featured).slice(0, 4);
-const posts = (await getPosts(lang)).slice(0, 3);
 const current = experience.find((e) => e.end === null)!;
 const words = ["Android", "web", "full stack"];
 
@@ -223,17 +221,6 @@ const sectionLink =
         </dl>
       </section>
     </div>
-
-    <!-- Posts -->
-    <section class="reveal mb-24" aria-labelledby="posts">
-      <h2 id="posts" class="section-title">
-        {tr("home.latest")}
-        <a href={localizePath("/blog", lang)} class={sectionLink}
-          >{tr("home.allPosts")} <span class="transition-transform group-hover/link:translate-x-0.5">→</span></a
-        >
-      </h2>
-      <PostList posts={posts} lang={lang} />
-    </section>
 
     <!-- Contact -->
     <section
