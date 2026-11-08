@@ -42,15 +42,15 @@ export const experience: Experience[] = [
     end: null,
     highlights: {
       tr: [
-        "Film keşfi odaklı sosyal platformu kurdum ve tek başıma geliştiriyorum: 140+ sayfalık web uygulaması yayında ve 30+ kullanıcıya ulaştı, Android uygulaması kapalı testte.",
-        "Android uygulamasını (Kotlin, Jetpack Compose, Material 3, Hilt) 25 Gradle modülüne (14 feature, 9 core) ayırdım; Google ile giriş ve Firebase bildirimlerini entegre ettim.",
-        "119 Kotlin test dosyası (Robolectric, Roborazzi ekran görüntüsü testleri), baseline profile, dev ve prod flavor yapısı ve GitHub Actions release iş akışlarıyla Android kalite sürecini otomatikleştirdim.",
+        "Film keşfi odaklı sosyal platformu kurdum ve tek başıma geliştiriyorum: Next.js web uygulaması yayında ve 30+ kullanıcıya ulaştı, Kotlin Android uygulaması kapalı testte.",
+        "Kaydırmalı öneri, zevk eşleşmesi, kulüpler ve mesajlaşma dahil 140+ web sayfasını Next.js, React ve TypeScript ile yazıyorum; Türkçe ve İngilizce dil desteğini ve PWA kurulumunu tamamladım.",
+        "Android uygulamasını (Kotlin, Jetpack Compose, Hilt) 25 Gradle modülüne ayırdım; Google ile giriş ve Firebase bildirimlerini entegre ettim, 119 Kotlin test dosyasıyla (Robolectric, Roborazzi) test altına aldım.",
         "Veritabanını 160 sürümlü SQL migration ile tasarladım; Vitest ve Playwright testlerini, Docker derlemesini ve GitHub Actions CI hattını yapılandırdım.",
       ],
       en: [
-        "Founded and solely develop a film discovery social platform: web app live with 30+ users and 140+ pages (swipe recommendations, taste matching, clubs), Android app in closed testing, one Supabase backend.",
-        "Structured the Android app (Kotlin, Jetpack Compose, Material 3, Hilt) into 25 Gradle modules (14 feature, 9 core) with Google sign in and Firebase push notifications.",
-        "Automated Android quality with 119 Kotlin test files (Robolectric, Roborazzi screenshot tests), a baseline profile, dev and prod flavors and GitHub Actions release workflows.",
+        "Founded and solely develop a film discovery social platform: Next.js web app live with 30+ users, Kotlin Android app in closed testing, one Supabase (PostgreSQL) backend.",
+        "Implemented 140+ web pages in Next.js, React and TypeScript, including swipe recommendations, taste matching, clubs and messaging, with Turkish and English localization and PWA support.",
+        "Structured the Android app (Kotlin, Jetpack Compose, Hilt) into 25 Gradle modules with Google sign in, Firebase push notifications and 119 Kotlin test files (Robolectric, Roborazzi screenshot tests).",
         "Designed the database across 160 versioned SQL migrations and set up unit tests (Vitest), end to end tests (Playwright), Docker builds and GitHub Actions CI.",
       ],
     },
@@ -188,8 +188,8 @@ export const skills: { label: L; items: string[] }[] = [
 ];
 
 export const spokenLanguages: L = {
-  tr: "Türkçe (anadil), İngilizce (B1)",
-  en: "Turkish (native), English (B1)",
+  tr: "Türkçe (anadil), İngilizce (B2)",
+  en: "Turkish (native), English (B2)",
 };
 
 export const cvPdf: Record<Lang, string> = {
